@@ -1,0 +1,13 @@
+node_modules
+
+
+
+
+#my Envs
+.DS_Store
+playground
+server/public/users/*
+server/public/products/*
+
+!server/public/users/.gitkeep
+!server/public/products/.gitkeep
