@@ -1,4 +1,5 @@
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {BrowserRouter, Routes,Route} from "react-router-dom";
+import About from "./pages/About";
 import Cart from "./pages/Cart";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/home";
@@ -8,49 +9,36 @@ import Footer from "./layouts/Footer";
 import Stack from 'react-bootstrap/Stack'
 import Products from "./pages/Products";
 import Login from "./pages/Login";
+import Contact from "./pages/Contact";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <div><Home/></div>,
-  },
-  {
-    path: "/cart",
-    element: <div><Cart/></div>,
-  },
-  {
-    path: "/products",
-    element: <div><Products/></div>,
-  },
-  {
-    path: "/login",
-    element: <div><Login/></div>,
-  },
- 
-  {
-    path: "/products/:id",
-    element: <div><ProductDetail/></div>,
-  },
-  {
-    path: "*",
-    element: <div><ErrorPage/></div>,
-  },
- 
-]);
+
+
+
 const App=()=>{
 
   return (
+    <BrowserRouter>
 <div className="d-flex flex-column h-100">
    <Stack  gap={3}>
      <ENavbar/>
   <main className="flex-shrink-0  vh-100">
   <div className="container">
-  <RouterProvider router= {router}/>
+  <Routes>
+    <Route path="/" element={<Home/>}/>
+    <Route path="/about" element={<About/>}/>
+    <Route path="/cart" element={<Cart/>}/>
+    <Route path="/contact" element={<Contact/>}/>
+    <Route path="/login" element={<Login/>}/>
+    <Route path="/products/:id" element={<ProductDetail/>}/>
+    <Route path="/products" element={<Products/>}/>
+    <Route path="*" element={<ErrorPage/>}/>
+  </Routes>
   </div>
   </main>
   <Footer/>
   </Stack>
   </div>
+  </BrowserRouter>
   )
 }
 
