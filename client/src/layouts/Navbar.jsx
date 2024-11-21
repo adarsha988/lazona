@@ -18,12 +18,12 @@ import Stack from 'react-bootstrap/Stack'
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto">
-            <Nav.Link >
-              <Link to ="/products"className='text-decoration-none'>
-              Products</Link></Nav.Link>
-               <Nav.Link >
-              <Link to ="/about"className='text-decoration-none'>About</Link>
-              </Nav.Link>
+          
+              <Link to ="/products"className='nav-link text-decoration-none'>
+              Products</Link>
+             
+              <Link to ="/about"className='nav-link text-decoration-none'>About</Link>
+              
              </Nav>
           <Form className="d-flex">
             <Form.Control
@@ -35,16 +35,16 @@ import Stack from 'react-bootstrap/Stack'
             <Button variant="outline-success">Search</Button>
           </Form>
           <Stack direction="horizontal" gap={3} className=" px-2 ">
-           <Link to ='/cart'>
-           <a className="btn btn-light " >
+           <Link to ='/cart'className="btn btn-light " >
+
             <BsCart3 /> &nbsp;
             <Badge bg="secondary">Cart</Badge>
-            </a>
+            
            </Link>
-           <Link to ='/login'>
-           <a className="btn btn-light " >
+           <Link to ='/login'className="btn btn-light " >
+          
            <MdOutlineLogin />
-            </a>
+           
            </Link>
             
            </Stack>

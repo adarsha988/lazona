@@ -1,16 +1,19 @@
 import{FaArrowLeftLong } from "react-icons/fa6"
+import{CiCircleRemove } from "react-icons/ci";
+import {useDispatch,useSelector} from "react-redux";
+import { removeItem } from "../slices/cartSlice";
 const Cart =()=>{
-    const cart = [
-        { Name: "Product A", Image: "imageA.jpg", Price: 100, Quantity: 2, Total_Price: 200 },
-        { Name: "Product B", Image: "imageB.jpg", Price: 150, Quantity: 1, Total_Price: 150 },
-      ];
+    const dispatch=useDispatch();
+    const removeFromCart = (id) => {
+      if(id){
+     dispatch(removeItem(id));
+    }}
+ const {cart}= useSelector(state=>state.cart); 
+    
     return <>
-    
- { cart.length > 0 ? < FilledCart cart={cart}/>:<EmptyCart/> } 
-    
-    </>
+ { cart.length > 0 ? < FilledCart cart={cart} removeFromCart ={removeFromCart }/>:<EmptyCart/> }  </>
 };
-const FilledCart=({cart})=>{
+const FilledCart=({cart,removeFromCart })=>{
     
     return(<>
   <div className="container my-5">
@@ -36,25 +39,36 @@ const FilledCart=({cart})=>{
                 cart.map((data,index)=>
                 (
                     <tr key={index} scope="row"><td>
-                    {data.Name || "Name"}
+                    {data?.name || "Name"}
                     </td>
                 <td>
                     <img src={data.Image||""}alt={data.Name} width="50" className="img-thumbnail"></img>
                     </td>
                 <td>
-                    {data.Price.toFixed(2)||"Price"}
+                    {data?.price||"Price"}
                     </td>
                 <td>
-                    {data.Quantity||"Quantity"}
+                    {data?.quantity||"Quantity"}
                     </td>
                 <td>
-                    {data.Total_Price||"Total Price"}
+                    {Number(data.price)*Number(data?.quantity)}
                     </td>
+                   <CiCircleRemove color="red" size={24} onClick={ ()=>removeFromCart(data?.id)}/>
                     </tr>
+                    
                 ))
-            }
+               
+            } 
+            <tr>
+                <td colSpan={5}>
+                 Total Carts
+                </td>
+                <td>Total Amount</td>
+            </tr>
             </tbody>
-        </table> 
+          
+        </table>
+        
         <div className="d-flex justify-content-between mt-4">
             <a href="./products" className="btn btn-success"> 
             <FaArrowLeftLong /> &nbsp; Continue shopping</a>
