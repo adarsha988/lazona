@@ -21,15 +21,15 @@ const App=()=>{
 <div className="d-flex flex-column h-100">
    <Stack  gap={3}>
      <ENavbar/>
-  <main className="flex-shrink-0  vh-100">
-  <div className="container">
+  <main className="flex-grow-1  vh-100">
+  <div className="container ">
   <Routes>
     <Route path="/" element={<Home/>}/>
     <Route path="/about" element={<About/>}/>
     <Route path="/cart" element={<Cart/>}/>
     <Route path="/contact" element={<Contact/>}/>
     <Route path="/login" element={<Login/>}/>
-    <Route path="/products/:id" element={<ProductDetail/>}/>
+    <Route path="/productDetail/:id" element={<ProductDetail/>}/>
     <Route path="/products" element={<Products/>}/>
     <Route path="*" element={<ErrorPage/>}/>
   </Routes>

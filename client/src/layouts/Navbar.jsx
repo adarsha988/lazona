@@ -7,22 +7,38 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Stack from 'react-bootstrap/Stack'
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
   
+
+
    const ENavbar =()=>{
+    const quantity=useSelector((state)=>state.cart.quantity)
+      
+    const [IsdropDown,setIsdropDown]=useState(false);
+ const toggleDropdown=()=>{
+      setIsdropDown(!IsdropDown);
+ }
+ const closeDropdown=()=>{
+      setIsdropDown(false);
+ }
+
   return (
    
-    <Navbar fixed="top"expand="lg" className="bg-body-tertiary ">
+    <Navbar fixed="top"expand="lg" className="bg-body-tertiary " expanded={IsdropDown}>
       <Container fluid>
         <Navbar.Brand ><Link to="/" className='text-decoration-none text-black-50'>
         Lazona</Link></Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
-          <Nav className="me-auto">
+        <Navbar.Toggle aria-controls="navbarScroll"  onClick={toggleDropdown}/>
+        <Navbar.Collapse data-bs-toggle="dropdown">
+          <Nav className="me-auto ">
           
-              <Link to ="/products"className='nav-link text-decoration-none'>
+              <Link to ="/products"className='nav-link text-decoration-none' onClick={closeDropdown}>
               Products</Link>
              
-              <Link to ="/about"className='nav-link text-decoration-none'>About</Link>
+              <Link to ="/about"className='nav-link text-decoration-none'onClick={closeDropdown}>About</Link>
+            
+              <Link to ="/contact"className='nav-link text-decoration-none'onClick={closeDropdown}>Contact</Link>
               
              </Nav>
           <Form className="d-flex">
@@ -38,7 +54,7 @@ import Stack from 'react-bootstrap/Stack'
            <Link to ='/cart'className="btn btn-light " >
 
             <BsCart3 /> &nbsp;
-            <Badge bg="secondary">Cart</Badge>
+            <Badge bg="secondary">{quantity ?? 0}</Badge>
             
            </Link>
            <Link to ='/login'className="btn btn-light " >

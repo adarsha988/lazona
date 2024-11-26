@@ -1,19 +1,35 @@
 import{FaArrowLeftLong } from "react-icons/fa6"
 import{CiCircleRemove } from "react-icons/ci";
 import {useDispatch,useSelector} from "react-redux";
-import { removeItem } from "../slices/cartSlice";
+import { removeItem,increaseQuantity,decreaseQuantity } from "../slices/cartSlice";
+import numberFormatter from "number-formatter";
+
 const Cart =()=>{
     const dispatch=useDispatch();
+    const {cart}= useSelector(state=>state.cart);
     const removeFromCart = (id) => {
       if(id){
      dispatch(removeItem(id));
     }}
- const {cart}= useSelector(state=>state.cart); 
+    const increase = (id) => {
+      if(id){
+     dispatch(increaseQuantity(id));
+    }}
+    const decrease = (id) => {
+      if(id){
+     dispatch(decreaseQuantity(id));
+    }}
+    const getTotalAmount = () => {
+    const totalAmount=cart.reduce((acc,item)=>acc+(item.quantity*item.price),0)
+        return totalAmount
+    }
+  
     
     return <>
- { cart.length > 0 ? < FilledCart cart={cart} removeFromCart ={removeFromCart }/>:<EmptyCart/> }  </>
+ { cart.length > 0 ? < FilledCart cart={cart} removeFromCart ={removeFromCart }
+ decrease={decrease}increase={increase} getTotalAmount={getTotalAmount}/>:<EmptyCart/> }  </>
 };
-const FilledCart=({cart,removeFromCart })=>{
+const FilledCart=({cart,removeFromCart,increase,decrease,getTotalAmount })=>{
     
     return(<>
   <div className="container my-5">
@@ -45,15 +61,17 @@ const FilledCart=({cart,removeFromCart })=>{
                     <img src={data.Image||""}alt={data.Name} width="50" className="img-thumbnail"></img>
                     </td>
                 <td>
-                    {data?.price||"Price"}
+                    {numberFormatter( " Rs#,###.##", Number(data?.price))}
                     </td>
                 <td>
-                    {data?.quantity||"Quantity"}
-                    </td>
+                <div className="btn btn-primary"onClick={()=>increase(data?.id)}> + </div> &nbsp;
+                <span className="badge-transparent m-2 ">{data?.quantity||"Quantity"}</span>
+                &nbsp; 
+                 <div className="btn btn-primary"onClick={()=>decrease(data?.id)}> - </div></td>
                 <td>
-                    {Number(data.price)*Number(data?.quantity)}
+                {numberFormatter( " #,##,###.##",  Number(data.price)*Number(data?.quantity))}
                     </td>
-                   <CiCircleRemove color="red" size={24} onClick={ ()=>removeFromCart(data?.id)}/>
+                  <td><CiCircleRemove color="red" size={24} onClick={ ()=>removeFromCart(data?.id)}/></td> 
                     </tr>
                     
                 ))
@@ -63,7 +81,7 @@ const FilledCart=({cart,removeFromCart })=>{
                 <td colSpan={5}>
                  Total Carts
                 </td>
-                <td>Total Amount</td>
+                <td>{numberFormatter( " Rs#,##,###.##", Number(getTotalAmount() ))}</td>
             </tr>
             </tbody>
           
