@@ -51,13 +51,13 @@ import { useSelector } from 'react-redux';
             <Button variant="outline-success">Search</Button>
           </Form>
           <Stack direction="horizontal" gap={3} className=" px-2 ">
-           <Link to ='/cart'className="btn btn-light " >
+           <Link to ='/cart'className="btn btn-light border-secondary " >
 
             <BsCart3 /> &nbsp;
             <Badge bg="secondary">{quantity ?? 0}</Badge>
             
            </Link>
-           <Link to ='/login'className="btn btn-light " >
+           <Link to ='/login'className="btn btn-light border-secondary" >
           
            <MdOutlineLogin />
            
