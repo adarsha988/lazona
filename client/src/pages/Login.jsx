@@ -7,7 +7,7 @@ const Login=()=>{
   return (
     
     <div style={{
-      backgroundColor: '#FFDAB9'}}className="container-fluid overflow-hidden m-5 p-5">
+      backgroundColor: '#E6E6FA'}}className="container-fluid overflow-hidden my-5 p-5 col-12 col-md-8 col-lg-6">
       <Form>
        <div className="text-start mx-2">
         <p className=" text-muted mb-1"style={{ fontWeight: 500 }}>Please enter your details</p>
@@ -29,7 +29,25 @@ const Login=()=>{
         </Col>
         <Row >
         <Form.Group as={Col} className="mx-2" >
-        <Form.Check type="checkbox"  style={{ fontWeight: 500 }}label=" Remember for 30 days"></Form.Check>
+        <Form.Check
+  type="checkbox"
+  label="Remember for 30 days"
+  style={{ display: 'flex', alignItems: 'center' }}
+>
+  <Form.Check.Input
+    type="checkbox"
+    style={{
+      width: '20px',
+      height: '20px',
+      border: '2px solid #ccc', 
+      borderRadius: '4px', 
+    }}
+  />
+  <Form.Check.Label style={{ marginLeft: '8px', fontWeight: 500 }}>
+    Remember for 30 days
+  </Form.Check.Label>
+</Form.Check>
+
         </Form.Group>
         <Form.Group as={Col} xs="auto" className="mx-3" >
        <Link to="/forgetPassword"> Forgot password</Link> 
