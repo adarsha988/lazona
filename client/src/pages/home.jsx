@@ -1,6 +1,10 @@
+import CarouselPage from "../components/CarouselPage";
+
 const Home = ()=>{
 
-    return <> home </>
+    return (
+        <CarouselPage/>
+    )
 };
 
     export default Home
