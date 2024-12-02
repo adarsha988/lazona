@@ -4,7 +4,7 @@ import './About.css';
 const About = () => {
   return (
     <div className="about-page">
-      {/* Hero Section */}
+      
       <section className="hero-section">
         <div className="container">
           <h1 className="hero-title">About Us</h1>
@@ -39,7 +39,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team Section */}
+     
       <section className="team-section">
         <div className="container">
           <h2>Meet Our Team</h2>
@@ -75,7 +75,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
+     
       <section className="testimonials-section">
         <div className="container">
           <h2>What Our Customers Say</h2>

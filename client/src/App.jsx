@@ -9,7 +9,7 @@ import Footer from "./layouts/Footer";
 import Products from "./pages/Products";
 import Login from "./pages/Login";
 import Contact from "./pages/Contact";
-import AdminProducts from"./pages/Admin/Products"
+import AdminProducts from"./pages/Admin/AdminProducts"
 import { PrivateRoutes } from "./components/Routes";
 
 
@@ -45,7 +45,7 @@ const App=()=>{
         key={index}
         path={`/admin${route?.path}`}
         element={
-         <PrivateRoutes roles={route?.role}>
+         <PrivateRoutes roles={route?.role??" "}>
           { route?.component}
          </PrivateRoutes>
         }/>

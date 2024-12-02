@@ -54,11 +54,13 @@ const FilledCart=({cart,removeFromCart,increase,decrease,getTotalAmount })=>{
             {
                 cart.map((data,index)=>
                 (
+                  
                     <tr key={index} scope="row"><td>
-                    {data?.name || "Name"}
+                       
+                    {data?.title || "Name"}
                     </td>
                 <td>
-                    <img src={data.Image||""}alt={data.Name} width="50" className="img-thumbnail"></img>
+                    <img src={data.image||""}alt={data.title} width="50" className="img-thumbnail"></img>
                     </td>
                 <td>
                     {numberFormatter( " Rs#,###.##", Number(data?.price))}
@@ -69,7 +71,7 @@ const FilledCart=({cart,removeFromCart,increase,decrease,getTotalAmount })=>{
                 &nbsp; 
                  <div className="btn btn-primary"onClick={()=>decrease(data?.id)}> - </div></td>
                 <td>
-                {numberFormatter( " #,##,###.##",  Number(data.price)*Number(data?.quantity))}
+                {numberFormatter( " #,##,###.##",  Number(data.price)*Number(data?.quantity?? 1))}
                     </td>
                   <td><CiCircleRemove color="red" size={24} onClick={ ()=>removeFromCart(data?.id)}/></td> 
                     </tr>

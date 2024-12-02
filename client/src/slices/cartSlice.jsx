@@ -17,11 +17,13 @@ export const cartSlice= createSlice({
                
             }else{
                 state.cart.push({...action.payload,quantity:1});
+                console.log(state.cart)
             }
             state.quantity=state.cart.reduce((total,item)=>total+item.quantity,0)
         } ,
         removeItem:(state,action)=>{
             state.cart= state.cart.filter((cart)=>cart.id!==action.payload)
+            console.log(state.cart)
             state.quantity=state.cart.reduce((total,item)=>total+item.quantity,0)
         },
         increaseQuantity:(state, action)=>{ 
