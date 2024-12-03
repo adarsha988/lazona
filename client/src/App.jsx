@@ -13,6 +13,7 @@ import AdminProducts from"./pages/Admin/AdminProducts"
 import { PrivateRoutes } from "./components/Routes";
 
 
+
 const adminRoutes=[
   { path:"/products",component:<AdminProducts/>,role:"admin"},
   { path:"/orders",component:<AdminProducts/>,role:"admin"},
@@ -31,6 +32,7 @@ const App=()=>{
   <main className="flex-shrink-0 d-flex flex-column min-vh-100">
   <div className="container ">
   <Routes>
+
     <Route path="/" element={<Home/>}/>
     <Route path="/about" element={<About/>}/>
     <Route path="/cart" element={<Cart/>}/>
