@@ -36,7 +36,7 @@ const Products = () => {
                   <Card.Body>
                     <Card.Title className="product-title">{product.name||""}</Card.Title>
                     <Card.Text className="product-price">Price: ${product.price||""}</Card.Text>
-                    <Card.Text className="product-description">{product.description.substring(0,100).concat("......")||""}</Card.Text>
+                    <Card.Text className="product-description">{product.description?.substring(0,100).concat("......")||""}</Card.Text>
                     <Link to={`/productDetail/${product.id}`} variant="primary" className=" btn view-details-btn" >
                       View Details
                     </Link>

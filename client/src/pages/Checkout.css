@@ -1,0 +1,157 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  .checkout-page {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+  }
+  
+  /* Order Summary */
+  .order-summary {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+  }
+  
+  .order-summary h2 {
+    font-size: 1.5rem;
+  }
+  
+  .order-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .item-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .item-details {
+    flex-grow: 1;
+    margin-left: 15px;
+  }
+  
+  .item-details p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  
+  h3 {
+    text-align: right;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  /* Shipping Address */
+  .user-address form ,
+  .shipping-address form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+ 
+  .user-address input ,
+  .shipping-address select,
+  .shipping-address input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .shipping-address select:focus,
+  .shipping-address input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* Payment Details */
+  
+  
+  .place-order-btn {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .place-order-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.02);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .order-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .item-image {
+      margin-bottom: 10px;
+    }
+  
+    .item-details {
+      margin-left: 0;
+    }
+  
+    h3 {
+      text-align: left;
+      font-size: 1rem;
+    }
+  
+    .checkout-page {
+      padding: 15px;
+    }
+  
+    .place-order-btn {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .order-item {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .item-image {
+      width: 100%;
+      max-width: 120px;
+    }
+  
+    h3 {
+      text-align: center;
+      margin-top: 15px;
+    }
+  }
+  

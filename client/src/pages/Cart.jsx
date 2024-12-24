@@ -92,7 +92,7 @@ const FilledCart=({cart,removeFromCart,increase,decrease,getTotalAmount })=>{
         <div className="d-flex justify-content-between mt-4">
             <a href="./products" className="btn btn-success"> 
             <FaArrowLeftLong /> &nbsp; Continue shopping</a>
-            <a href="./productDetail" className="btn btn-secondary"> Proceed to checkout</a>
+            <a href="./checkout" className="btn btn-secondary"> Proceed to checkout</a>
 
 
         </div>

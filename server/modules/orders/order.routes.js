@@ -21,6 +21,7 @@ router.get("/", secureAPI(["admin"]), async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const result = await Controller.create(req.body);
+   
     res.json({ data: result, msg: "success" });
   } catch (e) {
     next(e);

@@ -3,7 +3,6 @@ import { SERVER_URL } from "../constants";
 
 const API=axios.create({
     baseURL:SERVER_URL,
-    timeout:1000,
     headers:{
         'Content-Type':'application/json',
          'Authorization':localStorage.getItem("user")?"Bearer"+JSON.parse(localStorage.getItem("user")).token:null,
