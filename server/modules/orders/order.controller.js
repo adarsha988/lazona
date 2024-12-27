@@ -116,6 +116,27 @@ const approve = (id, payload) => {
   return Model.findOneAndUpdate({ _id: id }, payload, { new: true });
 };
 
+const updateBasedonPayment=async(StripePayload)=>{
+const {id,status}=StripePayload;
+const checkOrder= await Model.findOne({orderId:id});
+if (!checkOrder) throw new Error("Order not Found ")
+if (status==="complete")
+{
+  await Model.findOneAndUpdate(
+    {orderId:id},
+    {status:"completed"},
+    {new:true}
+);
+}
+if (status==="expired")
+{
+  await Model.findOneAndUpdate(
+    {orderId:id},
+    {status:"failed"},
+    {new:true}
+);
+}
+}
 // const updateBasedonPayment = async (stripePayload) => {
 //   const { id, status } = stripePayload;
 //   const checkOrder = await Model.findOne({ orderId: id });
@@ -154,5 +175,5 @@ module.exports = {
   getById,
   list,
   updateById,
-  // updateBasedonPayment,
+  updateBasedonPayment,
 };

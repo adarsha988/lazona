@@ -5,7 +5,7 @@ const productSchema = new Schema({
  
     name:{type:String,required:true,
         maxlength:30,
-        minlength:5
+        minlength:2
     },
     description:{type:String},
     alias: [{ type: String, required: true, unique: true }],
