@@ -10,7 +10,7 @@ const ProductDetail= () => {
   const dispatch=useDispatch();
   const{id}=useParams();
 const {products}= useSelector((state)=>state.products)
-console.log(products)
+
     const input= products?.find((item)=>item.id===parseInt(id));
     if (!input) {
       return <p>Product not found.</p>;  // Show a message if the product doesn't exist
@@ -47,7 +47,7 @@ console.log(products)
               <Button
                 className="add-to-cart-btn"
                 variant="primary"
-                // disabled={input.countInStock === 0}
+                disabled={input.quantity<1 ? true : false }
                 onClick={addToCartHandler}
               >
                 Add to Cart

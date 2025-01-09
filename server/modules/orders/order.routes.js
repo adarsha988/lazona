@@ -22,7 +22,6 @@ router.get("/", secureAPI(["admin"]), async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const result = await Controller.create(req.body);
-   
     res.json({ data: result, msg: "success" });
   } catch (e) {
     next(e);
@@ -88,54 +87,7 @@ router.post("/create-checkout-session", async (req, res,
 });
 
 
-router.post('/webhook', express.raw({type: 'application/json'}), async(request, response) => {
-  
-  // Only verify the event if you have an endpoint secret defined.
-  // Otherwise use the basic event deserialized with JSON.parse
-  if (endpointSecret) {
-    // Get the signature sent by Stripe
-    const signature = request.headers['stripe-signature'];
-    try {
-      const event = stripe.webhooks.constructEvent(
-        request.body,
-        signature,
-        endpointSecret
-      );
-      switch (event.type) {
-        case 'checkout.session.async_payment_failed':
-          const async_payment_failed = event.data.object;
-         await Controller.updateBasedonPayment(async_payment_failed);
-          break;
-        case 'checkout.session.async_payment_succeeded':
-          const async_payment_succeeded = event.data.object;
-          await Controller.updateBasedonPayment(async_payment_succeeded);
-          
-          break;
-        case 'checkout.session.completed':
-          const session_completed = event.data.object;
-          await Controller.updateBasedonPayment(session_completed);
-          break;
-        case 'checkout.session.expired':
-          const session_expired = event.data.object;
-           await Controller.updateBasedonPayment(session_expired);
-          break;
-       
-        default:
-        
-          console.log(`Unhandled event type ${event.type}.`);
-      }
-    } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`, err.message);
-      return response.sendStatus(400);
-    }
-  }
 
-  // Handle the event
-
-
-
-  response.send();
-});
 
 
 module.exports = router;

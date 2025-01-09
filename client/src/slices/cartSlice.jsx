@@ -11,9 +11,10 @@ export const cartSlice= createSlice({
     initialState,
     reducers:{
         addToCart:(state,action)=>{
-          const itemInCart=state.cart.find((item)=>item.id===action.payload.id)
+          const itemInCart=state.cart.find((item)=>item._id===action.payload._id)
           if(itemInCart){
-                itemInCart.quantity++;
+            if(itemInCart.quantity < action.payload.quantity)
+               {itemInCart.quantity++;} 
                
             }else{
                 state.cart.push({...action.payload,quantity:1});
@@ -22,26 +23,28 @@ export const cartSlice= createSlice({
             state.quantity=state.cart.reduce((total,item)=>total+item.quantity,0)
         } ,
         removeItem:(state,action)=>{
-            state.cart= state.cart.filter((cart)=>cart.id!==action.payload)
-            console.log(state.cart)
+            state.cart= state.cart.filter((cart)=>cart._id!==action.payload)
+            
             state.quantity=state.cart.reduce((total,item)=>total+item.quantity,0)
         },
         increaseQuantity:(state, action)=>{ 
-                const itemInCart= state.cart.find((item)=> item.id===action.payload)
+                const itemInCart= state.cart.find((item)=> item._id===action.payload.id)
                 
+                const checkProduct= action.payload.products.find((item)=>item._id===itemInCart._id)
                 if(itemInCart){
-                     itemInCart.quantity++;
+                    if(itemInCart.quantity<checkProduct.quantity)
+                          {  itemInCart.quantity++;}
                    state.quantity=state.cart.reduce((total,item)=>total+item.quantity,0)
                   }
             },
         decreaseQuantity:(state, action)=>{
-              const itemInCart= state.cart.find((item)=>item.id===action.payload)
+              const itemInCart= state.cart.find((item)=>item._id===action.payload)
                 if (itemInCart){
                     if (itemInCart.quantity>1){
                         itemInCart.quantity--;
                         state.quantity=state.cart.reduce((total,item)=>total+item.quantity,0)
                     }else{
-                        state.cart=state.cart.filter((item)=>item.id!==action.payload);
+                        state.cart=state.cart.filter((item)=>item._id!==action.payload);
                     }
                 }
             },

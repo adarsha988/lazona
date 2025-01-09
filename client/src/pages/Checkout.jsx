@@ -5,8 +5,8 @@ import "./Checkout.css"; // Custom styles
 import {removeAll} from "../slices/cartSlice"
 import { create } from "../slices/orderSlice";
 import { useCallback } from "react";
-import { SERVER_URL } from "../constants";
-
+import {URLS } from "../constants";
+import API from "../utils/api";
 const Checkout = () => {
   const [stripeCheckout,setstripeCheckout]= useState({
     stripeId:"",
@@ -36,7 +36,7 @@ rest.address=address.concat(", ",state,", ", country ,", ", pobox);
 rest.amount=getTotal();
 const products= cart.map((item)=>{
     return{
-        product:item?.id,
+        product:item?._id,
         quantity:Number(item?.quantity),
         price:Number(item?.price),
         amount:Number(item?.quantity)*Number(item?.price)
@@ -63,9 +63,9 @@ const createPayments=useCallback(()=>{
       price_data: {
         currency: 'usd',
         product_data: {
-          name: item?.title,
+          name: item?.name,
         },
-        unit_amount: Number(item?.price)*100,
+        unit_amount: Number(item?.price),
       },
       quantity: Number(item?.quantity),
   
@@ -76,14 +76,10 @@ const createPaymentIntent= useCallback(async()=>{
   
   
     try{
-        const response= await fetch(`${SERVER_URL}/create-checkout-session`,{
-          method :"POST",
-          headers:{
-            "Content-Type":"application/json",
-          },
-          body :JSON.stringify(createPayments()),
-        });
-    const cs = await response.json();
+      const Data=createPayments();
+     const response= await API.post(`${URLS.ORDERS}/create-checkout-session`, Data)
+      console.log(response);
+    const cs = await response.data;
     console.log(cs)
     setstripeCheckout(()=>({stripeId:cs?.data?.id,url: cs?.data?.url}))
   } catch (error){
@@ -105,11 +101,11 @@ createPaymentIntent();
         <h2>Order Summary</h2>
         <ul>
           {cart.map((item) => (
-            <div key={item.id}  className="border-bottom border-muted">
+            <div key={item._id}  className="border-bottom border-muted">
                   <li className="order-item">
-              <img src={item.image} alt={item.title} className="item-image" />
+              <img src={item.images[0]} alt={item.name} className="item-image" />
               <div className="item-details">
-                <p>{item.title}</p>
+                <p>{item.name}</p>
                 <p>
                   ${item.price} x {item.quantity} = $
                   {(item.price * item.quantity).toFixed(2)}

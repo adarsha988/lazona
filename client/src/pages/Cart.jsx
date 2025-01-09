@@ -7,13 +7,15 @@ import numberFormatter from "number-formatter";
 const Cart =()=>{
     const dispatch=useDispatch();
     const {cart}= useSelector(state=>state.cart);
+    const {products}= useSelector(state=>state.products);
+    
     const removeFromCart = (id) => {
       if(id){
      dispatch(removeItem(id));
     }}
     const increase = (id) => {
       if(id){
-     dispatch(increaseQuantity(id));
+     dispatch(increaseQuantity({id,products}));
     }}
     const decrease = (id) => {
       if(id){
@@ -27,9 +29,9 @@ const Cart =()=>{
     
     return <>
  { cart.length > 0 ? < FilledCart cart={cart} removeFromCart ={removeFromCart }
- decrease={decrease}increase={increase} getTotalAmount={getTotalAmount}/>:<EmptyCart/> }  </>
+ decrease={decrease}increase={increase} getTotalAmount={getTotalAmount} />:<EmptyCart/> }  </>
 };
-const FilledCart=({cart,removeFromCart,increase,decrease,getTotalAmount })=>{
+const FilledCart=({cart,removeFromCart,increase,decrease,getTotalAmount,})=>{
     
     return(<>
   <div className="container my-5">
@@ -57,23 +59,23 @@ const FilledCart=({cart,removeFromCart,increase,decrease,getTotalAmount })=>{
                   
                     <tr key={index} scope="row"><td>
                        
-                    {data?.title || "Name"}
+                    {data?.name || "Name"}
                     </td>
                 <td>
-                    <img src={data.image||""}alt={data.title} width="50" className="img-thumbnail"></img>
+                    <img src={data.images[0]||""}alt={data.name} width="50" className="img-thumbnail"></img>
                     </td>
                 <td>
                     {numberFormatter( " Rs#,###.##", Number(data?.price))}
                     </td>
                 <td>
-                <div className="btn btn-primary"onClick={()=>increase(data?.id)}> + </div> &nbsp;
+                <div className="btn btn-primary"onClick={()=>increase(data?._id)}> + </div> &nbsp;
                 <span className="badge-transparent m-2 ">{data?.quantity||"Quantity"}</span>
                 &nbsp; 
-                 <div className="btn btn-primary"onClick={()=>decrease(data?.id)}> - </div></td>
+                 <div className="btn btn-primary"onClick={()=>decrease(data?._id)}> - </div></td>
                 <td>
                 {numberFormatter( " #,##,###.##",  Number(data.price)*Number(data?.quantity?? 1))}
                     </td>
-                  <td><CiCircleRemove color="red" size={24} onClick={ ()=>removeFromCart(data?.id)}/></td> 
+                  <td><CiCircleRemove color="red" size={24} onClick={ ()=>removeFromCart(data?._id)}/></td> 
                     </tr>
                     
                 ))

@@ -1,9 +1,10 @@
 import {createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import * as PRODUCT_API from "../Services/Product"
+import {list} from "../Services/Product"
 const initialState={
     currentPage:1,
     error:" ",
     loading: false,
+    limit:20,
     products:[],
     product:{},
     total:0,
@@ -11,10 +12,9 @@ const initialState={
 }
 export const fetchProducts=createAsyncThunk(
     "products/fetchProducts",
-    async()=>{
-   const response= await PRODUCT_API.list();
-    
-   return response.data
+    async({limit,page})=>{ 
+        const resp= await list({limit,page});
+          return resp.data;
 
 }
 )
@@ -26,12 +26,17 @@ export const productSlice= createSlice({
         setCurrentPage:(state,action)=>{
             state.currentPage = action.payload;
 
+        },
+        setLimit:(state,action)=>{
+          state.currentPage=1;
+          state.limit= action.payload;
         }
     },
     extraReducers:(builder)=>{
         builder
         .addCase(fetchProducts.fulfilled,(state,action)=>{
-            state.products=[...action.payload]; 
+            state.products=action.payload.data.data;
+            state.total = action.payload.data.total;   
             state.loading= false;})
         .addCase(fetchProducts.pending,(state)=>{
             state.loading= true;})
@@ -41,6 +46,6 @@ export const productSlice= createSlice({
         })
     }
 });
-export const {setCurrentPage}= productSlice.actions;
+export const {setCurrentPage,setLimit}= productSlice.actions;
 
 export const productReducer = productSlice.reducer;

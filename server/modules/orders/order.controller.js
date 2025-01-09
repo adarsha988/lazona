@@ -6,16 +6,16 @@ const create = (payload) => {
   payload.id = uuidv4();
   // Decrease product count from product model
   const products = payload?.products;
-  // products.map(async (product) => {
-  //   const { product: id, quantity } = product;
-  //   const productInfo = await productModel.findOne({ _id: id });
-  //   if (!productInfo) throw new Error("Product not found");
-  //   await productModel.findOneAndUpdate(
-  //     { _id: id },
-  //     { quantity: productInfo?.quantity - quantity },
-  //     { new: true }
-  //   );
-  // });
+  products.map(async (product) => {
+    const { product: id, quantity } = product;
+    const productInfo = await productModel.findOne({ _id: id });
+    if (!productInfo) throw new Error("Product not found");
+    await productModel.findOneAndUpdate(
+      { _id: id },
+      { quantity: productInfo?.quantity - quantity },
+      { new: true }
+    );
+  });
   return Model.create(payload);
 };
 
@@ -130,11 +130,21 @@ if (status==="complete")
 }
 if (status==="expired")
 {
-  await Model.findOneAndUpdate(
+ const order = await Model.findOneAndUpdate(
     {orderId:id},
     {status:"failed"},
     {new:true}
 );
+order.products.map(async (product) => {
+  const { product: id, quantity } = product;
+  const productInfo = await productModel.findOne({ _id: id });
+  if (!productInfo) throw new Error("Product not found");
+  await productModel.findOneAndUpdate(
+    { _id: id },
+    { quantity: productInfo?.quantity + quantity },
+    { new: true }
+  );
+});
 }
 }
 // const updateBasedonPayment = async (stripePayload) => {

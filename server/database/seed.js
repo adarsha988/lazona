@@ -46,8 +46,7 @@ var setup = {
         quantity:5,
         price:2000,
         category: cat1?._id,
-        images:["https://lostsoles.co.uk/shop/relax-fit-tshirt-black/#&gid=1&pid=1",
-        " https://lostsoles.co.uk/shop/relax-fit-tshirt-black/#&gid=1&pid=1",
+        images:[
         "https://owayo-cdn.com/cdn-cgi/image/format=auto,fit=contain,width=490/newhp/img/productHome/productSeitenansicht/productservice/tshirts_classic_herren_basic_productservice/st2020_sre.png "]
       }) 
       await productController.create({
