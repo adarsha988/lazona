@@ -1,22 +1,28 @@
 import React, { useCallback, useEffect } from "react";
+import { GrFormView } from "react-icons/gr";
+import { IoCartOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { Row, Col, Card, Button } from "react-bootstrap";
+import { Row, Col, Card, Button, Badge } from "react-bootstrap";
 import "./ProductPage.css"; // Import CSS file
 import { useSelector,useDispatch } from "react-redux";
-import { fetchProducts } from "../slices/productSlice";
+import { fetchProducts,setCurrentPage,setLimit} from "../slices/productSlice";
 import { SkelLoader } from "../components/SkeletalLoaders";
+import { addToCart } from "../slices/cartSlice";
+import Paginate from "../components/Paginate";
 
 const Products = () => {
-  const {products,loading}= useSelector((state)=>state.products);
+  const {products,limit,currentPage,total,loading,error}= useSelector((state)=>state.products);
   const dispatch=useDispatch();
   const initFetch= useCallback(()=>{
-    dispatch(fetchProducts());
-  },[dispatch])
+    dispatch(fetchProducts({limit,page:currentPage}));
+  },[dispatch,limit,currentPage])
   
   useEffect(()=>{
     initFetch();
   },[initFetch])
-
+ const addToCartHandler=(product)=>{
+ dispatch(addToCart(product));
+   }
   return (
     <div className="product-list-container">
       <h1 className="text-center my-4">Our Products</h1>
@@ -24,12 +30,17 @@ const Products = () => {
         (
           <Row>
              {products.map((product) => (
-              
-              <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Card className="product-card mb-4">
+                {product?.quantity<1 && (
+                  <div className="badge-ribbon">
+                  <span className="badge bg-danger">out of stock</span>
+                </div>
+                )}
+
                   <Card.Img
                     variant="top"
-                    src={product.image}
+                    src={product.images[0]}
                     alt={product.name}
                     className="product-image"
                   />
@@ -37,13 +48,24 @@ const Products = () => {
                     <Card.Title className="product-title">{product.name||""}</Card.Title>
                     <Card.Text className="product-price">Price: ${product.price||""}</Card.Text>
                     <Card.Text className="product-description">{product.description?.substring(0,100).concat("......")||""}</Card.Text>
-                    <Link to={`/productDetail/${product.id}`} variant="primary" className=" btn view-details-btn" >
-                      View Details
+                   <div className="d-flex justify-content-center mt-4">
+                   <Link to={`/productDetail/${product._id}`} variant="primary" className=" view-btn"  >
+                     <GrFormView />
                     </Link>
-                  </Card.Body>
+                                  <Button
+                                    className="add-btn"
+                                    variant="primary"
+                                    disabled={product.quantity<1 ? true : false }
+                                    onClick={()=>addToCartHandler(product)}
+                                  >
+                                  <IoCartOutline />
+                                  </Button>
+                                   </div>
+                   </Card.Body>
                 </Card>
               </Col>
             ))}
+
           </Row>
         )
       :
@@ -66,7 +88,8 @@ const Products = () => {
          ) }
        </div>
       )}
-   
+   <Paginate dispatch={dispatch}limit={limit} setCurrentPage={setCurrentPage} total={total} currentPage={currentPage}
+    setLimit={setLimit}/>
     </div>
   );
  
