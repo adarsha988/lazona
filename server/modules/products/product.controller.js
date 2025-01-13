@@ -1,6 +1,5 @@
 const Model=require('./product.model')
-// const { Types } = require('mongoose');
-// const { ObjectId } = Types;
+ const {ObjectId} = require("mongoose").Types;
 
 
 const create=(payload)=>{
@@ -75,40 +74,36 @@ const list = async(limit,page,search)=>{
     const { data, total } = newData;
     return { data, total: total || 0, limit, pageNum };
 }
-const getById=async(id)=>{
-    // const objectId = new ObjectId(id);
-    // const result = await Model.aggregate([
-    //     {
-    //       $match: {
-    //         _id: objectId,
-    //       },
-    //     },
-    //     {
-    //       $lookup: {
-    //         from: "categories",
-    //         localField: "category",
-    //         foreignField: "_id",
-    //         as: "category_name",
-    //       },
-    //     },
-    //     {
-    //       $unwind: {
-    //         path: "$category_name",
-    //         preserveNullAndEmptyArrays: false,
-    //       },
-    //     },
-    //     {
-    //       $addFields: {
-    //         category_name: "$category_name.name",
-    //       },
-    //     },
-    //   ]);
-    //   if (result?.length === 0) return {};
-    //   return result[0];
-    
-    return Model.findOne({_id:id});
-     };
-    
+const getById = async (id) => {
+    const result = await Model.aggregate([
+      {
+        $match: {
+          _id: new ObjectId(id),
+        },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "category_name",
+        },
+      },
+      {
+        $unwind: {
+          path: "$category_name",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $addFields: {
+          category_name: "$category_name.name",
+        },
+      },
+    ]);
+    if (result?.length === 0) return {};
+    return result[0];
+  };
  
 const updateById=(id,payload)=>{
 

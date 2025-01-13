@@ -2,27 +2,29 @@ import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import "./ProductDetailPage.css"; // Import CSS
-import { addToCart } from "../slices/cartSlice";
-import { useParams } from "react-router-dom";
-import { getById } from "../slices/productSlice";
+import { updateToCart,addToCart} from "../slices/cartSlice";
+import { useParams,Link } from "react-router-dom";
+import { fetchProducts,getProducts } from "../slices/productSlice";
+import { useState } from "react";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { product,products } = useSelector((state) => state.products);
+  const [Quantity,setQuantity]= useState(1);
+  const [random4Item,setrandom4Item]= useState([]);
 
-  const getProduct = useCallback(() => {
-    dispatch(getById(id));
+  const fetchProduct = useCallback(() => {
+    dispatch(fetchProducts({limit:40,page:1}));
   }, [dispatch, id]);
+  const getProduct = useCallback(() => {
+    dispatch(getProducts(id));
+  }, [dispatch,id]);
 
-  useEffect(() => {
-    getProduct();
-  }, [getProduct]);
+ 
 
-  const addToCartHandler = () => {
-    dispatch(addToCart(product));
-  };
-  const ProductImage= ()=>{
+ 
+  const ProductImage= useCallback(()=>{
 const firstRandomIndex = Math.floor(Math.random()*products.length);
 const secRandomIndex = Math.floor(Math.random()*products.length);
 const thirdRandomIndex = Math.floor(Math.random()*products.length);
@@ -34,9 +36,14 @@ const randProduct=[
   products[thirdRandomIndex],
   products[fourthRandomIndex],
 ]
-    return randProduct;
-  }
-
+   setrandom4Item(randProduct);
+   
+  },[products])
+  useEffect(() => {
+    getProduct();
+    ProductImage();
+    if(products?.length===0) fetchProduct
+  }, [fetchProduct,ProductImage,getProduct,products]);
   return (
     <div className="product-details-container py-5">
       <Row>
@@ -73,25 +80,25 @@ const randProduct=[
               <Card.Text className="tag-section">
                 <strong>
                   Tag:
-                  <a href=""> {product?.category}</a>
+                  <a href=""> {product?.category_name}</a>
                  </strong>
               </Card.Text>
               <Card.Text className="quantity-section">
                <div>
-               <label for="quantity">Quantity : </label> &nbsp;
-               <input type="number" id="quantity" name="quantity" min="1" max={String(product?.quantity)} defaultValue="1"/><br/>
+               <label htmlFor="quantity">Quantity : </label> &nbsp;
+               <input type="number" id="quantity" name="quantity" min="1" max={String(product?.quantity)} disabled={product?.quantity < 1} value={Quantity} onChange={(e)=>{ setQuantity(Number(e.target.value))}}/><br/>
                </div>
               </Card.Text>
 
               <Card.Text className="product-stock">
                 <strong>Stock:</strong>{" "}
-                {product?.countInStock > 0 ? "In Stock" : "Out of Stock"}
+                {product?.quantity > 0 ? "In Stock" : "Out of Stock"}
               </Card.Text>
               <Button
                 className="add-to-cart-btn"
                 variant="primary"
-                disabled={product?.countInStock < 1}
-                onClick={addToCartHandler}
+                disabled={product?.quantity < 1}
+                onClick={()=>{dispatch(updateToCart({product,Quantity}))}}
               >
                 Add to Cart
               </Button>
@@ -116,9 +123,9 @@ const randProduct=[
                 </Card.Body>
               </Card>
             ))
-          ) : (
-            <p>No reviews available for this product.</p>
-          )}
+          ) : 
+           <div><p>No reviews available for this product.</p></div> 
+          }
         </Col>
       </Row>
       <Row>
@@ -129,11 +136,14 @@ const randProduct=[
         </Row>
         
         <div className="image-thumbnail d-flex gap-2 mt-3 p-0 text-center pro-box-section">
-         { ProductImage().map((product,index)=>{
+         { random4Item.map((product,index)=>{
             return (
             <div key={index} className="col-lg-3 pb-2">
             <div className="pro-box border p-0 m-0">
-            <img  src={product.images?.[0]}/>
+              <Link to={`/productDetail/${product._id}`}>
+              <img  src={product.images?.[0]}/>
+              </Link>
+                
           </div>
             </div>
           )

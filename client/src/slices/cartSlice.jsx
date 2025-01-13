@@ -51,10 +51,37 @@ export const cartSlice= createSlice({
             removeAll:(state)=>{
                 state.cart =[];
                 state.quantity=0;
-            }
+            },
+            updateToCart:(state,action)=>{
+
+             const{product,Quantity}=action.payload
+            
+                const itemInCart=state.cart.find((item)=>item._id===product._id)
+                if(itemInCart){
+                  if(itemInCart.quantity < product.quantity)
+                   {
+                    if(Quantity){
+                        itemInCart.quantity= itemInCart.quantity+Quantity;
+                       
+                      }else{
+                    itemInCart.quantity++;
+                
+                      }
+                    } 
+
+                     
+                  }else{
+                    if(Quantity){
+                        state.cart.push({...product,quantity:Quantity});
+                    }else{
+                        state.cart.push({...product,quantity:1});
+                    }
+                  }
+                  state.quantity=state.cart.reduce((total,item)=>total+item.quantity,0)
+             } ,
     }
 });
 
 
-export const  {addToCart,removeItem,increaseQuantity,decreaseQuantity,removeAll}=cartSlice.actions;
+export const  {addToCart,removeItem,increaseQuantity,decreaseQuantity,removeAll,updateToCart}=cartSlice.actions;
 export const cartReducer= cartSlice.reducer
