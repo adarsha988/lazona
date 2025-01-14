@@ -1,8 +1,17 @@
 import {Form,Row,Col, Button} from "react-bootstrap"
 import { Link } from "react-router-dom"
+import { loginUser } from "../slices/authSlice";
+import { useCallback, useEffect, useState} from "react";
+import { useDispatch,useSelector } from "react-redux";
 const Login=()=>{
-
-
+const dispatch= useDispatch();
+const { isLoggedIn}= useSelector((state)=>state.auth)
+const [signUp,setSignup]=useState({email:"",password:""})
+const handleSubmit=(e)=> {
+  e.preventDefault();
+ 
+ dispatch(loginUser(signUp));
+}
 
   return (
     
@@ -18,13 +27,13 @@ const Login=()=>{
               border: '1px solid #ccc',
               borderRadius: '4px',
             }} >
-          <Form.Control type="email"placeholder="email"></Form.Control>
+          <Form.Control type="email"placeholder="email" value={signUp.email} onChange={(e)=>{  setSignup((prev)=> {return{...prev,email:e.target.value}})}}></Form.Control>
           </Form.Group>
           <Form.Group as={Row}style={{
               border: '1px solid #ccc',
               borderRadius: '4px',
             }} >
-          <Form.Control type="password" placeholder="password"></Form.Control>
+          <Form.Control type="password" placeholder="password" value={signUp.password} onChange={(e)=>{  setSignup((prev)=> {return{...prev,password:e.target.value}})}}></Form.Control>
           </Form.Group>
         </Col>
         <Row >
@@ -56,10 +65,10 @@ const Login=()=>{
         <Col className=" d-grid gap-4 m-4 mt-5">
          
           <Form.Group as={Row} >
-          <Button variant="primary" type="submit"> Sign up</Button>
+          <Button variant="primary" type="submit" onClick={(e)=>handleSubmit(e)} > Sign up</Button>
           </Form.Group>
           <Form.Group xs="auto" >
-            Dont have an account? <Link to="/sign up">Sign up</Link>
+            Dont have an account? <Link to="/signup">Sign up</Link>
           </Form.Group>
         </Col>
         

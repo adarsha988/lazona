@@ -12,6 +12,7 @@ import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutState";
 import Contact from "./pages/Contact";
 import AdminProducts from "./pages/Admin/AdminProducts";
+import SignupPage from "./pages/Signup";
 import { PrivateRoutes } from "./components/Routes";
 
 const adminRoutes = [
@@ -39,6 +40,7 @@ const App = () => {
               msg="transaction failed"/>} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={< SignupPage />} />
               <Route path="/productDetail/:id" element={<ProductDetail />} />
               <Route path="/admin/products" element={<AdminProducts />} />
               <Route path="/products" element={<Products />} />
