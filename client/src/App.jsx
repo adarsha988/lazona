@@ -13,19 +13,26 @@ import CheckoutSuccess from "./pages/CheckoutState";
 import Contact from "./pages/Contact";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import SignupPage from "./pages/Signup";
-import { PrivateRoutes } from "./components/Routes";
+import { PrivateRoutes,AdminRoutes } from "./components/Routes";
+import Dashboard from "./pages/Admin/Dashboard";
+import Adminbar from "./layouts/Adminbar";
+import { useSelector } from "react-redux";
 
 const adminRoutes = [
+  { path: "/categories", component: <Dashboard/>, role: "admin" },
+  { path: "/dashboard", component: <Dashboard/>, role: "admin" },
   { path: "/products", component: <AdminProducts />, role: "admin" },
   { path: "/orders", component: <AdminProducts />, role: "admin" },
   { path: "/users", component: <AdminProducts />, role: "admin" },
 ];
 
 const App = () => {
+  const {isLoggedIn}= useSelector((state)=>state.auth)
+  console.log(isLoggedIn)
   return (
     <div className="">
       <BrowserRouter>
-        <ENavbar />
+      {isLoggedIn ? <Adminbar/>:<ENavbar /> }  
 
         <main className="flex-shrink-0 d-flex flex-column min-vh-100">
           <div className="container ">
@@ -39,19 +46,22 @@ const App = () => {
               msgHeader="something went wrong.try again!"
               msg="transaction failed"/>} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={
+                <PrivateRoutes>
+                <Login />
+              </PrivateRoutes>
+            } />
               <Route path="/signup" element={< SignupPage />} />
               <Route path="/productDetail/:id" element={<ProductDetail />} />
-              <Route path="/admin/products" element={<AdminProducts />} />
               <Route path="/products" element={<Products />} />
               {adminRoutes.map((route, index) => (
                 <Route
                   key={index}
                   path={`/admin${route?.path}`}
                   element={
-                    <PrivateRoutes roles={route?.role ?? " "}>
+                    <AdminRoutes roles={route?.role ?? " "}>
                       {route?.component}
-                    </PrivateRoutes>
+                    </AdminRoutes>
                   }
                 />
               ))}

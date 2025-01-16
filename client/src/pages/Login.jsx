@@ -1,16 +1,26 @@
 import {Form,Row,Col, Button} from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { loginUser } from "../slices/authSlice";
 import { useCallback, useEffect, useState} from "react";
 import { useDispatch,useSelector } from "react-redux";
 const Login=()=>{
 const dispatch= useDispatch();
+const navigate= useNavigate()
+const [error,setError]= useState("")
 const { isLoggedIn}= useSelector((state)=>state.auth)
 const [signUp,setSignup]=useState({email:"",password:""})
-const handleSubmit=(e)=> {
-  e.preventDefault();
- 
- dispatch(loginUser(signUp));
+const handleSubmit=async(e)=> {
+try {  e.preventDefault();
+ const data= await dispatch(loginUser(signUp));
+   if (data.payload.msg==="success"){
+    navigate("/admin/dashboard");
+   }else{
+    setError(data.payload.msg)
+   }} catch(e){
+    console.log(e)
+   }finally{setTimeout(()=>{
+    setError("")},2500)
+  }
 }
 
   return (
@@ -22,6 +32,17 @@ const handleSubmit=(e)=> {
         <p className=" text-muted mb-1"style={{ fontWeight: 500 }}>Please enter your details</p>
        <p className="fs-1 fw-bold">Welcome back</p>
        </div>
+       <label
+      style={{
+        color: 'red',
+        fontWeight: 'bold',
+        display: 'block',
+        marginTop: '10px',
+      }}
+      className="text-center"
+    >
+      {error}
+    </label>
         <Col className=" d-grid gap-4 m-4 mt-5">
           <Form.Group as={Row}style={{
               border: '1px solid #ccc',

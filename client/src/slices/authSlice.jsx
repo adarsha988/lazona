@@ -11,12 +11,21 @@ const initialState={
 }
 export const loginUser=createAsyncThunk(
     "auth/login",
-    async({email,password})=>{ 
-        console.log({email,password})
+    async({email,password}, { rejectWithValue })=>{ 
+         try{
         const resp= await login({email,password});
-          return resp.data;
+        return resp.data; 
+    }
+        catch(err){
+            if(!err.response){
+                throw err
+            }
+         return rejectWithValue(err.response.data)
+        }
+        }
+          
 
-}
+
 )
 
 
@@ -27,6 +36,11 @@ export const authSlice= createSlice({
     reducers:{
            setIsloggedIn:(state,action)=>{
                state.isLoggedIn= action.payload;
+           },
+           setloggedOut:(state)=>{
+               state.user={};
+               state.roles=[];
+               state.isLoggedIn= false;
            }
     },
     extraReducers:(builder)=>{
@@ -34,7 +48,7 @@ export const authSlice= createSlice({
         .addCase(loginUser.fulfilled,(state,action)=>{
             state.isLoggedIn=true;
             state.user=action.payload.data.user;
-            console.log(action.payload.data.token)
+            console.log(action.payload,"fullfill")
              setToken(action.payload.data.token)
             state.roles.push(...action.payload.data.user.roles) 
             state.loading= false;
@@ -43,10 +57,10 @@ export const authSlice= createSlice({
             state.loading= true;})
         .addCase(loginUser.rejected,(state,action)=>{
             state.loading= false;
-            state.error= action.error.message;
+            state.error= action.payload.msg;
         })
     }
 });
-export const {setIsloggedIn}= authSlice.actions;
+export const {setIsloggedIn,setloggedOut}= authSlice.actions;
 
 export const authReducer =authSlice.reducer;

@@ -5,6 +5,9 @@ export const setToken=(token)=>{
 }
 export const getToken=()=>{
     const token=localStorage.getItem("access_token");
-    if (!token) return null;
-  return true;
+  return token;
+}
+export const removeToken=()=>{
+    return localStorage.removeItem("access_token");
+  
 }
