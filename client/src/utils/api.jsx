@@ -5,7 +5,7 @@ const API=axios.create({
     baseURL:SERVER_URL,
     headers:{
         'Content-Type':'application/json',
-         'Authorization':localStorage.getItem("user")?"Bearer"+JSON.parse(localStorage.getItem("user")).token:null,
+         'Authorization':localStorage.getItem("access_token")?"Bearer "+localStorage.getItem("access_token"):null,
     },
 })
 export default API;

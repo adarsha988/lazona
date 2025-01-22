@@ -12,29 +12,33 @@ import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutState";
 import Contact from "./pages/Contact";
 import AdminProducts from "./pages/Admin/AdminProducts";
+import AddProduct from "./pages/Admin/AddProduct";
 import SignupPage from "./pages/Signup";
 import { PrivateRoutes,AdminRoutes } from "./components/Routes";
 import Dashboard from "./pages/Admin/Dashboard";
 import Adminbar from "./layouts/Adminbar";
 import { useSelector } from "react-redux";
 
-const adminRoutes = [
-  { path: "/categories", component: <Dashboard/>, role: "admin" },
-  { path: "/dashboard", component: <Dashboard/>, role: "admin" },
+
+const adminRoutes =  [
+  { path: "/categories", component: <Dashboard />, role: "admin" },
+  { path: "/dashboard", component: <Dashboard />, role: "admin" },
   { path: "/products", component: <AdminProducts />, role: "admin" },
+  { path: "/products/add", component: <AddProduct />, role: "admin" },
   { path: "/orders", component: <AdminProducts />, role: "admin" },
   { path: "/users", component: <AdminProducts />, role: "admin" },
-];
-
+]
 const App = () => {
+
+  
+  
   const {isLoggedIn}= useSelector((state)=>state.auth)
-  console.log(isLoggedIn)
   return (
     <div className="">
       <BrowserRouter>
       {isLoggedIn ? <Adminbar/>:<ENavbar /> }  
 
-        <main className="flex-shrink-0 d-flex flex-column min-vh-100">
+        <main className="flex-shrink-0 d-flex flex-column min-vh-100" style={{  "marginTop": "60px" , " padding": "16px "}}>
           <div className="container ">
             <Routes>
               <Route path="/" element={<Home />} />

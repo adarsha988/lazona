@@ -25,7 +25,8 @@ import { removeToken } from '../utils/session';
  const closeDropdown=()=>{
       setIsdropDown(false);
  }
- const handleLogOut=()=>{
+ const handleLogOut=(e)=>{
+  e.preventDefault();
 removeToken();
 dispatch(setloggedOut());
  }
@@ -52,7 +53,7 @@ dispatch(setloggedOut());
              <Nav className='d-inline-flex me-3'>Welcome {user?.name}</Nav>
           <Stack direction="horizontal" gap={3} className=" px-2 ">
           
-           <Button onClick={()=>{handleLogOut()}}>
+           <Button onClick={(e)=>{handleLogOut(e)}}>
           
            <IoLogOutOutline />
            

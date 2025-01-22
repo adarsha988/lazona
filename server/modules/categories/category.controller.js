@@ -20,7 +20,6 @@ const create= async(payload)=>{
         const newCategory = await Model.create(payload);
         return newCategory;
     } catch (error) {
-        console.error('Error creating category:', error);
         throw error;
     }
 }
@@ -82,10 +81,9 @@ const list = async(limit,page,search)=>{
         }
     ]).allowDiskUse(true);
     
-    console.log('Response:', response);
+   
     
     const newData = response[0] || { data: [], total: 0 };
-    console.log('New Data:', newData);
     
     const { data, total } = newData;
     

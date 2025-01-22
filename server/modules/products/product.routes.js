@@ -30,12 +30,24 @@ router.get("/",async(req,res,next)=>{
 })
 
  router.post("/",secureAPI(["admin"]),upload.array("images",4),async(req,res,next)=>{
- try{    
+ try{  
+ 
     if( req.files){
+        
         req.body.images=[];
         req.files.map((file)=>{
-            req.body.images.push("poducts/".concat(file.filename))
+            req.body.images.push("products/".concat(file.filename))
         })}
+    
+    if( req.body.images && req.body.images.length>0){ 
+       console.log("req body",req.body.images)
+          req.files= req.body.images
+          req.body.images=[]
+        req.files.map((file)=>{
+            console.log(file)
+            req.body.images.push("products/".concat(file))
+        })}
+
     
     req.body.created_by=req.currentUser;
           const result= await Controller.create(req.body);

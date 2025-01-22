@@ -12,10 +12,11 @@
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.3.0",
-    "axios": "^1.7.8",
+    "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "jwt-decode": "^4.0.0",
     "number-formatter": "^1.2.0",
+    "qs": "^6.14.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-bootstrap-icons": "^1.11.4",
