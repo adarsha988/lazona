@@ -8,7 +8,7 @@ const create=(payload)=>{
 const list = async(limit,page,search)=>{
 
     const pageNum = parseInt(page) || 1;
-    const size= parseInt(limit) || 5;
+    const size= parseInt(limit) ||20;
      let { name,isArchived} = search ;
     const query = [];
     if (name) {
@@ -111,8 +111,7 @@ const updateById=(id,payload)=>{
     
 }
 const deleteById=(id,payload)=>{
-
-    return Model.findOneAndUpdate({_id:id},payload,{new:true});
+   return Model.findOneAndUpdate({_id:id},payload,{new:true});
 
 }
 

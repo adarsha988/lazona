@@ -13,6 +13,7 @@ const initialState={
 export const fetchProducts=createAsyncThunk(
     "products/fetchProducts",
     async({limit,page})=>{ 
+        console.log("fetching products")
         const resp= await list({limit,page});
           return resp.data;
 

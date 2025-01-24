@@ -86,6 +86,7 @@ router.put("/:id",secureAPI(["admin"]),upload.array("images",4),async(req,res,ne
  
 })
 router.delete("/:id",secureAPI(["admin"]),async(req,res,next)=>{
+
     try{
         req.body.updated_by= req.currentUser;
       const result= await Controller.deleteById(req.params.id,req.body);

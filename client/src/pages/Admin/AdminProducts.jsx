@@ -1,9 +1,10 @@
 import Table from "../../components/Table";
 import { useSelector,useDispatch } from "react-redux";
 import { fetchProducts } from "../../slices/productSlice";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import { URLS } from "../../constants";
+import useApi from "../../hooks/useApi";
 
 const headers=[
   "id",
@@ -11,16 +12,20 @@ const headers=[
   "quantity",
   "price"]
 const AdminProducts=()=>{
+  
+  const{deleteById,updateById,msg}=useApi();
   const {products,limit,currentPage}= useSelector((state)=>state.products);
+
    const dispatch=useDispatch();
+
    const initFetch= useCallback(()=>{
      dispatch(fetchProducts({limit,page:currentPage}));
+    
    },[dispatch,limit,currentPage])
    
    useEffect(()=>{
      initFetch();
    },[initFetch])
-console.log(products)
   return (
     <>
     <div className="flex d-flex jusify-content-end">
@@ -30,7 +35,7 @@ console.log(products)
       </button>
       </Link>
     </div>
-    <Table products={products} headers={headers}/>
+    <Table products={products} headers={headers} deleteById={deleteById} msg={msg} url={URLS.PRODUCTS}/>
 
     </>
   )
