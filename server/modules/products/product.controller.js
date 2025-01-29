@@ -25,7 +25,7 @@ const list = async(limit,page,search)=>{
        query.push( 
         {
             '$match': {
-                isArchived:Boolean(isArchived)|| false, 
+                isArchived:isArchived|| false, 
             },
         },
         {
@@ -71,6 +71,7 @@ const list = async(limit,page,search)=>{
     );
    const response= await Model.aggregate(query).allowDiskUse(true);
     const newData = response[0] || { data: [], total: 0 };
+   
     const { data, total } = newData;
     return { data, total: total || 0, limit, pageNum };
 }

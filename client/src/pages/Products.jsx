@@ -9,6 +9,7 @@ import { fetchProducts,setCurrentPage,setLimit} from "../slices/productSlice";
 import { SkelLoader } from "../components/SkeletalLoaders";
 import { addToCart } from "../slices/cartSlice";
 import Paginate from "../components/Paginate";
+import { SERVER_URL } from "../constants";
 
 const Products = () => {
   const {products,limit,currentPage,total,loading,error}= useSelector((state)=>state.products);
@@ -40,7 +41,7 @@ const Products = () => {
 
                   <Card.Img
                     variant="top"
-                    src={product.images[0]}
+                    src={product.images&&product.images[0].includes("https:")?product.images[0]:SERVER_URL+'/'+product.images[0]}
                     alt={product.name}
                     className="product-image"
                   />

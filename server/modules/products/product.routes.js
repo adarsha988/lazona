@@ -40,11 +40,9 @@ router.get("/",async(req,res,next)=>{
         })}
     
     if( req.body.images && req.body.images.length>0){ 
-       console.log("req body",req.body.images)
           req.files= req.body.images
           req.body.images=[]
         req.files.map((file)=>{
-            console.log(file)
             req.body.images.push("products/".concat(file))
         })}
 
@@ -69,15 +67,18 @@ const result= await Controller.getById(req.params.id);
  
 })
 router.put("/:id",secureAPI(["admin"]),upload.array("images",4),async(req,res,next)=>{
+    console.log("hello world")
     try{
         if( req.files.length>0){
             req.body.images=[];
             req.files.map((file)=>{
-                req.body.images.push("poducts/".concat(file.filename))
+                req.body.images.push("products/".concat(file.filename))
             })}
-        
+       
         req.body.updated_by=req.currentUser;
+        console.log(req.body)
       const result= await Controller.updateById(req.params.id,req.body);
+      console.log({result})
        res.json({data:result,msg:"Success"})
     }
     catch(e){

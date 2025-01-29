@@ -103,7 +103,7 @@ createPaymentIntent();
           {cart.map((item) => (
             <div key={item._id}  className="border-bottom border-muted">
                   <li className="order-item">
-              <img src={item.images[0]} alt={item.name} className="item-image" />
+              <img src={item && item.images[0].includes("https:")? item.images[0]:SERVER_URL+"/"+item.images[0]} alt={item.name} className="item-image" />
               <div className="item-details">
                 <p>{item.name}</p>
                 <p>

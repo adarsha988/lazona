@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Card, Button } from "react-bootstrap";
-import "./ProductDetailPage.css"; // Import CSS
+import  "./ProductDetailPage.css"; // Import CSS
+import { SERVER_URL } from "../constants";
 import { updateToCart,addToCart} from "../slices/cartSlice";
 import { useParams,Link } from "react-router-dom";
 import { fetchProducts,getProducts } from "../slices/productSlice";
@@ -51,7 +52,7 @@ const randProduct=[
         <Col md={6} className="mb-4">
           <div className="image-gallery">
             <img
-              src={product?.images?.[0]}
+              src={product.images&&product.images?.[0].includes("https:")?product.images?.[0]:SERVER_URL+'/'+product.images?.[0]}
               alt={product?.title}
               className="product-main-image mb-3"
             />
@@ -59,7 +60,7 @@ const randProduct=[
               {product?.images?.map((image, index) => (
                 <img
                   key={index}
-                  src={image}
+                  src={image.includes("https:")?image:SERVER_URL+'/'+image}
                   alt={`Thumbnail ${index + 1}`}
                   className="thumbnail-image border p-1"
                 />
@@ -84,10 +85,10 @@ const randProduct=[
                  </strong>
               </Card.Text>
               <Card.Text className="quantity-section">
-               <div>
+            
                <label htmlFor="quantity">Quantity : </label> &nbsp;
                <input type="number" id="quantity" name="quantity" min="1" max={String(product?.quantity)} disabled={product?.quantity < 1} value={Quantity} onChange={(e)=>{ setQuantity(Number(e.target.value))}}/><br/>
-               </div>
+              
               </Card.Text>
 
               <Card.Text className="product-stock">
@@ -124,7 +125,7 @@ const randProduct=[
               </Card>
             ))
           ) : 
-           <div><p>No reviews available for this product.</p></div> 
+          <>No reviews available for this product.</>
           }
         </Col>
       </Row>
@@ -141,7 +142,7 @@ const randProduct=[
             <div key={index} className="col-lg-3 pb-2">
             <div className="pro-box border p-0 m-0">
               <Link to={`/productDetail/${product._id}`}>
-              <img  src={product.images?.[0]}/>
+              <img  src={product.images&&product.images?.[0].includes("https:")?product.images?.[0]:SERVER_URL+'/'+product.images?.[0]}/>
               </Link>
                 
           </div>

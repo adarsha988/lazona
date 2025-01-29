@@ -3,6 +3,7 @@ import{CiCircleRemove } from "react-icons/ci";
 import {useDispatch,useSelector} from "react-redux";
 import { removeItem,increaseQuantity,decreaseQuantity } from "../slices/cartSlice";
 import numberFormatter from "number-formatter";
+import { SERVER_URL } from "../constants";
 
 const Cart =()=>{
     const dispatch=useDispatch();
@@ -62,7 +63,7 @@ const FilledCart=({cart,removeFromCart,increase,decrease,getTotalAmount,})=>{
                     {data?.name || "Name"}
                     </td>
                 <td>
-                    <img src={data.images[0]||""}alt={data.name} width="50" className="img-thumbnail"></img>
+                    <img src={data && data.images[0].includes("https:")? data.images[0]:SERVER_URL+"/"+data.images[0]||""}alt={data.name} width="50" className="img-thumbnail"></img>
                     </td>
                 <td>
                     {numberFormatter( " Rs#,###.##", Number(data?.price))}

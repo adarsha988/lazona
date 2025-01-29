@@ -1,6 +1,8 @@
 import { MdDelete,MdEdit } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 function Table({products,headers,msg,url,deleteById}) {
+  const Navigate=useNavigate()
 const handleChange=async(e,id)=>{
   e.preventDefault();
   const result= await Swal.fire({
@@ -20,14 +22,11 @@ const handleChange=async(e,id)=>{
         msg,
        "success"
       );
-    }
-  
- const handleEdit=async(id)=>{
-console.log(id)
- }
-
+    }}
+const handleEdit=(e,id)=>{
+  e.preventDefault()
+  Navigate(`/admin/products/${id}`)
 }
-
   return (
        <div className="table-responsive">
     <table className="table table-striped table-sm">

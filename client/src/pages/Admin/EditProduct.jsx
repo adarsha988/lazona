@@ -1,12 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { list } from '../../Services/Category'
 import { create } from '../../Services/Product'
+import { SERVER_URL, URLS } from '../../constants';
+import useApi from '../../hooks/useApi';
 import { Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
-function AddProduct() {
+function EditProduct() { 
+    const {id}= useParams();
+    const {updateById,getById}= useApi();
   const Navigate=useNavigate();
+ 
+  console.log(id)
     const [categories,setCategories]= useState([]);
     const [error,setError]=useState(null);
     const [msg,setMsg]= useState("")
@@ -17,10 +23,12 @@ function AddProduct() {
         name:'',
         quantity:"",
         price:"",
-        alias:[],
+        alias:"",
         brand:"",
-        category:""
+        category_name:""
     })
+
+
 const allcategories= useCallback( async()=>{
    const data=await list()
    if(!data) return null
@@ -49,14 +57,17 @@ const handleChange=async(e)=>{
         formData.append("images",file)
       }
       )
+      formData.append("images",files)
       formData.append("name",productDetail?.name);
       formData.append("quantity",productDetail?.quantity);
       formData.append("price",productDetail?.price);
       formData.append("alias",productDetail?.alias);
       formData.append("brand",productDetail?.brand);
       formData.append("category",productDetail?.category);
+      formData.append("id",id);
   
-    const {data}= await create(formData)
+    const data= await updateById(URLS.PRODUCTS,id,formData)
+   
      if(data?.msg=== "Success"){
         setMsg("Product Added Successfully!")
      }
@@ -74,9 +85,9 @@ const handleChange=async(e)=>{
         setProductDetail({name:'',
           quantity:"",
           price:"",
-          alias:[],
+          alias:"",
           brand:"",
-          category:""})
+          category_name:""})
         setError(null)
       }
     
@@ -98,6 +109,28 @@ useEffect(()=>{
   
 },[files])
 
+useEffect(()=>{
+const fetchData=async()=>{ 
+    const data= await getById(URLS.PRODUCTS,id)
+    console.log(data)
+    const {created_at,updated_at,isArchived,category,id:dataId,...rest}=data;
+  console.log({...rest})
+    setProductDetail((prev)=>{
+        return{...prev,...rest}
+    })
+    
+    setPreview(()=>
+    {
+        return [...rest.images]
+    })
+    console.log(preview)
+}
+
+    fetchData();
+
+
+},[id,getById])
+
   return (
     <div className='container col-sm-6'>
         <form onSubmit={(e)=>handleChange(e)}>
@@ -107,36 +140,31 @@ useEffect(()=>{
     <div className="mb-3 ">
       <label htmlFor="TextInput" className="form-label">Image</label>
       <input type="file"  className="form-control" placeholder=""  onChange={(e)=>{handleFile(e)}} multiple/>
-      <div className="grid gap-0 column-gap-3">
-  {preview &&
-    Array.from(preview).map((obj, idx) => (
-      <div
-        key={idx}
-        className="p-2 g-col-6"
-     
-      >
-        <div
-          style={{
-            height: '100px',
-            width: '100%',
-            border: '1px solid black',
-          }}
-        >
-          <img
-            src={obj}
-            alt={`preview-${idx}`}
-            style={{
-              height: '50%',
-              width: '50%',
-              objectFit: 'cover',
-            }}
-          />
-        </div>
-      </div>
-    ))}
-</div>
+      {preview && Array.from(preview).map((obj, index) => {
+        console.log(obj.startsWith('blob:') ? obj : `${SERVER_URL}/${obj}`)
+  return (
+    <div
+      key={index}
+      style={{
+        height: '100px',
+        width: '100px',
+        border: '1px solid black',
+        position: 'relative',
+      }}
+    >
+      <img
+        src={obj.startsWith('blob:') ? obj : `${SERVER_URL}/${obj}`}
+        alt={`preview-${index}`}
+        style={{
+          height: '100%',
+          width: '100%',
+          objectFit: 'cover',
+        }}
+      />
+    </div>
+  );
+})}
 
-     
     </div>
     <div className="mb-3 ">
       <label htmlFor="TextInput" className="form-label">ProductName</label>
@@ -159,14 +187,28 @@ useEffect(()=>{
       <input type="text" value={productDetail?.brand} className="form-control" placeholder=" "onChange={(e)=>{setProductDetail((prev)=>({...prev,brand:e.target.value}))}}/>
     </div>
     <div className="mb-3">
-      <label htmlFor="disabledSelect" className="form-label">categories</label>
-      <select id="disabledSelect" value={productDetail?.category} className="form-select"onChange={(e)=>{setProductDetail((prev)=>({...prev,category:e.target.value}))}}>
-        <option value="">select one </option>
-        {categories.length>0 ?categories.map((cat)=>{
-         return  <option key={cat._id}value={cat._id}>{cat?.name}</option>
-        }):null}
-      </select>
-    </div>
+  <label htmlFor="disabledSelect" className="form-label">categories</label>
+  <select
+    id="disabledSelect"
+    value={productDetail?.category_name}
+    className="form-select"
+    onChange={(e) => {
+      setProductDetail((prev) => ({
+        ...prev,
+        category_name: e.target.value,
+      }));
+    }}
+  >
+    <option value="">select one</option>
+    {categories.length > 0 &&
+      categories.map((cat) => (
+        <option key={cat._id} value={cat._id}>
+          {cat?.name}
+        </option>
+      ))}
+  </select>
+</div>
+
 {(error||msg) && <Alert variant={error?"danger":"success"}>
 {error? error:msg}
 </Alert>}
@@ -177,4 +219,4 @@ useEffect(()=>{
   )
 }
 
-export default AddProduct
+export default EditProduct
