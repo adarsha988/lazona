@@ -12,7 +12,7 @@ const slugGenerator =(payload)=>{
 
 
 const create= async(payload)=>{
-    console.log(payload)
+  
     try {
         if (!payload.name) {
             throw new Error('Category name is required');
@@ -109,7 +109,7 @@ try {const isUsed=await productModel.findOne({category:id});
 if(isUsed) throw new Error(`Category is in use. Please remove from product name ${isUsed.name} before deleting`)
     return  Model.deleteOne({_id:id})
 }catch(e){
-    console.log(e.message)
+    
 return e.message
 }
 }

@@ -10,7 +10,7 @@ import { useCategories } from '../../../hooks/useCategories';
 function Edit() {
   const {id}=useParams();
   const navigate=useNavigate();
-  const{updateById,getById,msg,error}=useCategories();
+  const{updateById,getById,error}=useCategories();
   const[category,setCategory]=useState({});
  
 
