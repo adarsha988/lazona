@@ -1,10 +1,10 @@
-import Table from "../../components/Table";
+import Table from "../../../components/Table";
 import { useSelector,useDispatch } from "react-redux";
-import { fetchProducts } from "../../slices/productSlice";
+import { fetchProducts } from "../../../slices/productSlice";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { URLS } from "../../constants";
-import useApi from "../../hooks/useApi";
+import { URLS } from "../../../constants";
+import useApi from "../../../hooks/useApi";
 
 const headers=[
   "id",

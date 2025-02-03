@@ -8,7 +8,7 @@ export const AdminRoutes = ({ children, roles }) => {
       {isLoggedIn() && isAdmin(roles) ? (
         children
       ) : isLoggedIn() && !isAdmin(roles) ? (
-        children// <Navigate replace to={"/admin/dashboard"} />
+        <Navigate replace to={"/admin/dashboard"} />
       ) : (
         <Navigate replace to={"/login"} />
       )}
@@ -27,6 +27,7 @@ export const PrivateRoutes = ({ children }) => {
 
 
 const isAdmin=(roles)=>{
+ 
   const token = getToken();
   if (!token) return false;
   //check for access_token duration
@@ -42,7 +43,6 @@ const isLoggedIn=()=>{
 
   const {exp}= jwtDecode(token);
   const now = Date.now();
-  return true
-  // return now < exp * 1000;
+  return now < exp * 1000;
 
 }

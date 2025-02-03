@@ -15,9 +15,10 @@ router.get("/",async(req,res,next)=>{
 })
 
  router.post("/",secureAPI(['admin']),async(req,res,next)=>{
- try{      
+ try{    
          req.body.created_by= req.currentUser;
           const result= await Controller.create(req.body);
+        
            res.json({data:result,msg:"Success"})
       }
  catch(e){
@@ -53,7 +54,6 @@ router.delete("/:id",secureAPI(["admin"]),async(req,res,next)=>{
     catch(e){
         next(e);
     }
-
 })
 
 

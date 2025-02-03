@@ -12,6 +12,7 @@ const slugGenerator =(payload)=>{
 
 
 const create= async(payload)=>{
+    console.log(payload)
     try {
         if (!payload.name) {
             throw new Error('Category name is required');
@@ -27,7 +28,7 @@ const create= async(payload)=>{
 const list = async(limit,page,search)=>{
 
     const pageNum = parseInt(page) || 1;
-    const size = parseInt(limit) || 5;
+    const size = parseInt(limit) || 15;
     const { name} = search || {};
     
     const query = {};
@@ -96,7 +97,7 @@ const getById = (id)=>{
 
 }
 
-const updateById =async(id,payload)=>{
+const updateById = async(id,payload)=>{
 if(payload.name){
     payload.slug= await slugGenerator(payload.name)
 }
@@ -104,9 +105,13 @@ if(payload.name){
 }
 
 const deleteById= async(id)=>{
-const isUsed=await productModel.findOne({category:id});
+try {const isUsed=await productModel.findOne({category:id});
 if(isUsed) throw new Error(`Category is in use. Please remove from product name ${isUsed.name} before deleting`)
-    return Model.deleteOne({_id:id})
+    return  Model.deleteOne({_id:id})
+}catch(e){
+    console.log(e.message)
+return e.message
+}
 }
 
 module.exports={create,list,getById,updateById,deleteById}

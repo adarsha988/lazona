@@ -1,24 +1,25 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { PrivateRoutes,AdminRoutes } from "./components/Routes";
+
+import{AdminProducts,AddProduct,EditProduct} from "./pages/Admin/products/index";
+import {Add,Admin,Edit} from "./pages/Admin/categories/index";
+import { Adminorder,Addorder,Editorder } from "./pages/Admin/orders";
+import { AddUser,AdminUser,EditUser } from "./pages/Admin/users";
+
 import About from "./pages/About";
 import Cart from "./pages/Cart";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
-import ENavbar from "./layouts/Navbar";
 import Footer from "./layouts/Footer";
 import Products from "./pages/Products";
 import Login from "./pages/Login";
 import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutState";
 import Contact from "./pages/Contact";
-import AdminProducts from "./pages/Admin/AdminProducts";
-import AddProduct from "./pages/Admin/AddProduct";
-import EditProduct from "./pages/Admin/EditProduct";
 import SignupPage from "./pages/Signup";
-import { PrivateRoutes,AdminRoutes } from "./components/Routes";
 import Dashboard from "./pages/Admin/Dashboard";
-import Adminbar from "./layouts/Adminbar";
-import { useSelector } from "react-redux";
 import Layout from "./layouts/Layout";
 import AdminLayout from "./layouts/AdminLayout";
 
@@ -65,7 +66,19 @@ const App = () => {
                                path={"/admin/categories"}
                               element={
                               <AdminRoutes roles="admin">
-                                 <AdminProducts/>
+                                 <Admin/>
+                              </AdminRoutes> }/>
+                               <Route
+                               path={"/admin/categories/add"}
+                              element={
+                              <AdminRoutes roles="admin">
+                                 <Add/>
+                              </AdminRoutes> }/>
+                               <Route
+                               path={"/admin/categories/:id"}
+                              element={
+                              <AdminRoutes roles="admin">
+                                 <Edit/>
                               </AdminRoutes> }/>
 
                                <Route
@@ -100,14 +113,39 @@ const App = () => {
                                path={"/admin/orders"}
                               element={
                               <AdminRoutes roles="admin">
-                                  <AddProduct />
+                                  <Adminorder />
+                              </AdminRoutes> }/>
+
+                               <Route
+                               path={"/admin/orders/add"}
+                              element={
+                              <AdminRoutes roles="admin">
+                                  <Addorder/>
+                              </AdminRoutes> }/>
+                               <Route
+                               path={"/admin/orders/:id"}
+                              element={
+                              <AdminRoutes roles="admin">
+                                  <Editorder />
                               </AdminRoutes> }/>
                                
                                <Route
                                path={"/admin/users"}
                               element={
                               <AdminRoutes roles="admin">
-                                  <AddProduct />
+                                  <AdminUser />
+                              </AdminRoutes> }/>
+                               <Route
+                               path={"/admin/users/add"}
+                              element={
+                              <AdminRoutes roles="admin">
+                                  <AddUser />
+                              </AdminRoutes> }/>
+                               <Route
+                               path={"/admin/users/:id"}
+                              element={
+                              <AdminRoutes roles="admin">
+                                  <EditUser/>
                               </AdminRoutes> }/>
                               
                                
@@ -115,9 +153,6 @@ const App = () => {
                                
                  </Route>
             </Routes>
-          
-        
-        <Footer />
       </BrowserRouter>
     </div>
   );
