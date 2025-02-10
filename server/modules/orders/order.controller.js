@@ -112,8 +112,9 @@ const deleteById = async (id, payload) => {
   return Model.deleteOne({ id });
 };
 
-const approve = (id, payload) => {
-  return Model.findOneAndUpdate({ _id: id }, payload, { new: true });
+const approve = async(id, payload) => {
+   const result =await Model.findOneAndUpdate({ _id: id }, payload, { new: true });
+   return result;
 };
 
 const updateBasedonPayment=async(StripePayload)=>{

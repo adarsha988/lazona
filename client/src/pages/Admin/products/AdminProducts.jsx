@@ -15,7 +15,6 @@ const headers=[
 const AdminProducts=()=>{
   const{deleteById,updateById,msg}=useApi();
   const {products,limit,currentPage}= useSelector((state)=>state.products);
-
    const dispatch=useDispatch();
    const initFetch= useCallback(()=>{
  

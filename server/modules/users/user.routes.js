@@ -22,7 +22,19 @@ router.get("/",secureAPI(["admin"]),async (req,res,next)=>{
    const {size,page,name,role}= req.query;
    const search={name,role}
   const result= await Controller.list(size,page,search);
- res.json({data:result,msg:'Success'})
+  res.json({data:result,msg:'Success'})
+  }
+  catch(e){
+  next(e);
+}
+})
+router.post("/",secureAPI(["admin"]),async (req,res,next)=>{
+  try{
+    req.body.created_by= req.currentUser;
+    req.body.updated_by= req.currentUser;
+    req.body.updated_at= new Date();
+    const result= await Controller.create(req.body);
+    res.json({data:result,msg:'Success'})
   }
   catch(e){
   next(e);
@@ -50,10 +62,11 @@ router.put("/profile",
      const{id,...rest}= req.body;
      rest.created_by= req.currentUser;
      rest.updated_by= req.currentUser;
+     req.body.updated_at= new Date();
      const me = req.currentRoles.includes("admin")?req.body.id: req.currentUser;
     if(!me) throw new Error("User ID is required")
      const result= await Controller.updateById(me,rest);
- res.json({data:result,msg:'Success'})
+    res.json({data:result,msg:'Success'})
     }
   catch(e){
   next(e);
@@ -75,6 +88,7 @@ router.put("/reset_password",secureAPI(["admin"]),async (req,res,next)=>{
    const {id,...rest}=req.body;
    rest.created_by= req.currentUser;
    rest.updated_by= req.currentUser;
+   req.body.updated_at= new Date();
    const result= await Controller.resetPassword(id,rest);
  res.json({data:result,msg:'Success'})
     }
@@ -86,6 +100,7 @@ router.patch("/status/:id",secureAPI(["admin"]),async (req,res,next)=>{
   try{
     req.body.created_by= req.currentUser;
     req.body.updated_by= req.currentUser;
+    req.body.updated_at= new Date();
    const result= await Controller.block(req.params.id,req.body);
  res.json({data:result,msg:'Success'})
     }
@@ -108,7 +123,8 @@ router.delete("/:id",secureAPI(["admin"]),async (req,res,next)=>{
   try{
     req.body.created_by= req.currentUser;
     req.body.updated_by= req.currentUser;
-  const result= await Controller.archive(req.params.id,req.body);
+    req.body.updated_at= new Date();
+   const result= await Controller.archive(req.params.id,req.body);
  res.json({data:result,msg:'Success'})
   }
   catch(e){

@@ -36,6 +36,7 @@ router.get("/",async(req,res,next)=>{
         
         req.body.images=[];
         req.files.map((file)=>{
+            console.log(file,"req-files")
             req.body.images.push("products/".concat(file.filename))
         })}
     
@@ -43,6 +44,7 @@ router.get("/",async(req,res,next)=>{
           req.files= req.body.images
           req.body.images=[]
         req.files.map((file)=>{
+            console.log(file,"req-body")
             req.body.images.push("products/".concat(file))
         })}
 

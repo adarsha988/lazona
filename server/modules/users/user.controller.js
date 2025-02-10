@@ -2,13 +2,19 @@ const Model=require("./user.model");
 const bcrypt= require("bcrypt")
 
 
-const create =(payload)=>{
-    return Model.create(payload);
+const create =async(payload)=>{
+    const{roles,password,...rest}=payload;
+    rest.password=await bcrypt.hash(payload.password,+process.env.SALT_ROUND)
+    rest.roles=[roles]
+    rest.isActive=true;
+    rest.isEmailVerified=true;
+    rest.isArchived=false;
+    return Model.create(rest);
 }
 
 const list = async (size, page, search) => {
     const pageNum = parseInt(page) || 1;
-    const limit = parseInt(size) || 5;
+    const limit = parseInt(size) || 20;
     const { name, role } = search || {};
     
     const query = {};
@@ -18,8 +24,6 @@ const list = async (size, page, search) => {
     if (role) {
         query.roles = role; 
     }
-    
-    console.log('Query:', query);
 
     const response = await Model.aggregate([
         {
@@ -27,7 +31,7 @@ const list = async (size, page, search) => {
         },
         {
             '$sort': {
-                created_at: 1,
+                created_at: -1,
             },
         },
         {

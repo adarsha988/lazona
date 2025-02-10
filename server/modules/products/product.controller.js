@@ -3,12 +3,13 @@ const Model=require('./product.model')
 
 
 const create=(payload)=>{
+   
     return Model.create(payload)
 }
 const list = async(limit,page,search)=>{
 
     const pageNum = parseInt(page) || 1;
-    const size= parseInt(limit) ||20;
+    const size= parseInt(limit) ||3;
      let { name,isArchived} = search ;
     const query = [];
     if (name) {

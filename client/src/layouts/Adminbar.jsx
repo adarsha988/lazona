@@ -7,6 +7,8 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Stack from 'react-bootstrap/Stack'
+
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { setloggedOut } from '../slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +17,7 @@ import { removeToken } from '../utils/session';
 
 
    const Adminbar =()=>{
+    const navigate=useNavigate()
     const {user}=useSelector((state)=>state.auth)
        const dispatch= useDispatch();
       
@@ -27,8 +30,10 @@ import { removeToken } from '../utils/session';
  }
  const handleLogOut=(e)=>{
   e.preventDefault();
-removeToken();
+
 dispatch(setloggedOut());
+removeToken();
+navigate("/");
  }
 
   return (

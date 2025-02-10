@@ -105,13 +105,9 @@ if(payload.name){
 }
 
 const deleteById= async(id)=>{
-try {const isUsed=await productModel.findOne({category:id});
+const isUsed=await productModel.findOne({category:id});
 if(isUsed) throw new Error(`Category is in use. Please remove from product name ${isUsed.name} before deleting`)
     return  Model.deleteOne({_id:id})
-}catch(e){
-    
-return e.message
-}
 }
 
 module.exports={create,list,getById,updateById,deleteById}

@@ -25,7 +25,6 @@ import { useCategories } from '../../../hooks/useCategories';
          })
          if(result.isConfirmed){
           const resp = await remove(id);
-        
           if(resp){
             Swal.fire({
              title:"Deleted!",

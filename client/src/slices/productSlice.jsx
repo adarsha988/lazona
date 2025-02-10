@@ -22,7 +22,7 @@ export const getProducts=createAsyncThunk(
     "products/getProducts",
     async(id)=>{  
         const resp= await getById(id);
-          return resp.data;
+          return resp.data
 
 }
 )
@@ -33,16 +33,14 @@ export const productSlice= createSlice({
     reducers:{
         setCurrentPage:(state,action)=>{
             state.currentPage = action.payload;
+           
 
         },
         setLimit:(state,action)=>{
           state.currentPage=1;
           state.limit= action.payload;
         },
-        getById:(state,action)=>{
-            state.product= state.products.find((item)=>item?._id===action.payload)
-
-        }
+      
     },
     extraReducers:(builder)=>{
         builder

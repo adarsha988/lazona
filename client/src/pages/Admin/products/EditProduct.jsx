@@ -20,7 +20,7 @@ function EditProduct() {
     const [preview,setPreview]= useState([])
 
     const [productDetail,setProductDetail]=useState({
-        name:'',
+        name:"",
         quantity:"",
         price:"",
         alias:"",
@@ -111,6 +111,7 @@ useEffect(()=>{
 
 useEffect(()=>{
 const fetchData=async()=>{ 
+  console.log(id)
     const data= await getById(URLS.PRODUCTS,id)
     console.log(data)
     const {created_at,updated_at,isArchived,category,id:dataId,...rest}=data;
@@ -141,7 +142,7 @@ const fetchData=async()=>{
       <label htmlFor="TextInput" className="form-label">Image</label>
       <input type="file"  className="form-control" placeholder=""  onChange={(e)=>{handleFile(e)}} multiple/>
       {preview && Array.from(preview).map((obj, index) => {
-        console.log(obj.startsWith('blob:') ? obj : `${SERVER_URL}/${obj}`)
+        // console.log(obj.startsWith('blob:') ? obj : `${SERVER_URL}/${obj}`)
   return (
     <div
       key={index}

@@ -7,6 +7,7 @@ import { create } from "../slices/orderSlice";
 import { useCallback } from "react";
 import {URLS } from "../constants";
 import API from "../utils/api";
+import { SERVER_URL } from "../constants";
 const Checkout = () => {
   const [stripeCheckout,setstripeCheckout]= useState({
     stripeId:"",
@@ -78,12 +79,10 @@ const createPaymentIntent= useCallback(async()=>{
     try{
       const Data=createPayments();
      const response= await API.post(`${URLS.ORDERS}/create-checkout-session`, Data)
-      console.log(response);
     const cs = await response.data;
-    console.log(cs)
     setstripeCheckout(()=>({stripeId:cs?.data?.id,url: cs?.data?.url}))
   } catch (error){
-    console.error("Error:",error);
+    alert("Error:",error);
   }
 
 },[createPayments])
@@ -103,7 +102,7 @@ createPaymentIntent();
           {cart.map((item) => (
             <div key={item._id}  className="border-bottom border-muted">
                   <li className="order-item">
-              <img src={item && item.images[0].includes("https:")? item.images[0]:SERVER_URL+"/"+item.images[0]} alt={item.name} className="item-image" />
+              <img src={item && item.images[0].includes("https:")? item?.images[0]:item && item?.images[0]? SERVER_URL+"/"+item.images[0]:"No image"} alt={item.name} className="item-image" />
               <div className="item-details">
                 <p>{item.name}</p>
                 <p>

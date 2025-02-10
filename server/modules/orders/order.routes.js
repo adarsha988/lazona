@@ -32,6 +32,7 @@ router.patch("/status/:id", secureAPI(["admin"]), async (req, res, next) => {
   try {
     req.body.updated_by = req.currentUser;
     req.body.updated_at = new Date();
+    console.log(req.body)
     const result = await Controller.approve(req.params.id, req.body);
     res.json({ data: result, msg: "success" });
   } catch (e) {
@@ -51,7 +52,7 @@ router.get("/:id", secureAPI(["admin"]), async (req, res, next) => {
 router.put("/:id", secureAPI(["admin"]), async (req, res, next) => {
   try {
     req.body.updated_at = new Date();
-    req.body.updated_by = req.currentUser;
+    req.body.updated_by = req.currentUser;;
     const result = await Controller.updateById(req.params.id, req.body);
     res.json({ data: result, msg: "success" });
   } catch (e) {

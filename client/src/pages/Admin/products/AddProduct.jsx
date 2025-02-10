@@ -17,7 +17,8 @@ function AddProduct() {
         name:'',
         quantity:"",
         price:"",
-        alias:[],
+        description:"",
+        alias:"",
         brand:"",
         category:""
     })
@@ -43,41 +44,51 @@ if(e.target.files.length>4)alert("can't upload more than 4 file")
 
 const handleChange=async(e)=>{
     e.preventDefault();
-    setLoading(true)
-    try{const formData = new FormData();
-      files.forEach((file,idx)=>{
+    console.log(productDetail.name)
+    try{
+      setLoading(true)
+      const formData = new FormData();
+      files.forEach((file)=>{
         formData.append("images",file)
       }
       )
+      console.log(formData,'formData')
+      formData.append("images", files);
       formData.append("name",productDetail?.name);
       formData.append("quantity",productDetail?.quantity);
       formData.append("price",productDetail?.price);
+      formData.append("description",productDetail?.description);
       formData.append("alias",productDetail?.alias);
       formData.append("brand",productDetail?.brand);
       formData.append("category",productDetail?.category);
-  
+    
+    
     const {data}= await create(formData)
-     if(data?.msg=== "Success"){
-        setMsg("Product Added Successfully!")
+     if(data?.msg==="Success"){
+        setMsg(`${productDetail?.name} Product Added Successfully. Redirecting in 3 secs`)
      }
      setTimeout(()=>{
-    Navigate("/admin/products")
-     },3000)
+      Navigate("/admin/products")
+       },3000)
     }
       catch(e){
         const errMsg = e.response ?JSON.stringify(e.response.data.msg):"Something went wrong";
         setError(errMsg)
       }finally{
-        setLoading(false)
-        setMsg("")
-        setFiles([])
-        setProductDetail({name:'',
-          quantity:"",
-          price:"",
-          alias:[],
-          brand:"",
-          category:""})
-        setError(null)
+        setTimeout(()=>{
+          setLoading(false)
+          setMsg("")
+          setFiles([])
+          setProductDetail({ 
+            name:"",
+            quantity:"",
+            price:"",
+            description:"",
+            alias:"",
+            brand:"",
+            category:""})
+          setError(null)
+        },2500)
       }
     
 }
@@ -149,6 +160,10 @@ useEffect(()=>{
     <div className="mb-3">
       <label htmlFor="disabledTextInput" className="form-label">price</label>
       <input type="number" value={productDetail?.price} className="form-control" placeholder=""onChange={(e)=>{setProductDetail((prev)=>({...prev,price:e.target.value}))}}/>
+    </div>
+    <div className="mb-3">
+      <label htmlFor="disabledTextInput" className="form-label">description</label>
+      <input type="text" value={productDetail?.description} className="form-control" placeholder=""onChange={(e)=>{setProductDetail((prev)=>({...prev,description:e.target.value}))}}/>
     </div>
     <div className="mb-3">
       <label htmlFor="disabledTextInput" className="form-label">alias</label>
