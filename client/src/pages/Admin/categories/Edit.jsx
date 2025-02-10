@@ -47,11 +47,11 @@ alert(error||e)
 <Form onSubmit={(e)=>{handleSubmit(e)}}>
       <Form.Group className="mb-3" >
         <Form.Label>New Category</Form.Label>
-        <Form.Control type="text" value={category.name}style={{width:"20rem", height:"2rem", padding:"1rem"}} placeholder="Enter category" onChange={(e)=>setCategory((prev)=>{ return {...prev,name:e.target.value}})}/>
+        <Form.Control type="text" value={category?.name||""}style={{width:"20rem", height:"2rem", padding:"1rem"}} placeholder="Enter category" onChange={(e)=>setCategory((prev)=>{ return {...prev,name:e.target.value}})}/>
       </Form.Group>
       <Form.Group className="mb-3" >
         <Form.Label>Slug</Form.Label>
-        <Form.Control type="text" value={category.slug}style={{width:"20rem", height:"2rem", padding:"1rem"}} placeholder="Enter category" disabled/>
+        <Form.Control type="text" value={category?.slug||""}style={{width:"20rem", height:"2rem", padding:"1rem"}} placeholder="Enter category" disabled/>
       </Form.Group>
      <Stack direction="horizontal"gap={3}>
        <Button variant="primary" type="submit" className='px-5'>

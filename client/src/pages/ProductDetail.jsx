@@ -9,18 +9,19 @@ import { fetchProducts,getProducts } from "../slices/productSlice";
 import { useState } from "react";
 
 const ProductDetail = () => {
-  const dispatch = useDispatch();
   const { id } = useParams();
+  const dispatch = useDispatch();
   const { product,products } = useSelector((state) => state.products);
   const [Quantity,setQuantity]= useState(1);
   const [random4Item,setrandom4Item]= useState([]);
 
-  const fetchProduct = useCallback(() => {
-    dispatch(fetchProducts({limit:40,page:1}));
-  }, [dispatch, id]);
   const getProduct = useCallback(() => {
     dispatch(getProducts(id));
   }, [dispatch,id]);
+
+  const fetchProduct = useCallback(() => {
+    dispatch(fetchProducts({limit:40,page:1}));
+  }, [dispatch]);
 
  
 
@@ -40,27 +41,29 @@ const randProduct=[
    setrandom4Item(randProduct);
    
   },[products])
+
   useEffect(() => {
-    getProduct();
-    ProductImage();
-    if(products?.length===0) fetchProduct
+     getProduct();
+     ProductImage();
+    if(products?.length===0) fetchProduct();
+   
   }, [fetchProduct,ProductImage,getProduct,products]);
   return (
     <div className="product-details-container py-5">
       <Row>
-        {/* Product Images */}
+        {/* Product Images */ }
         <Col md={6} className="mb-4">
           <div className="image-gallery">
             <img
-              src={product.images&&product.images?.[0].includes("https:")?product.images?.[0]:SERVER_URL+'/'+product.images?.[0]}
+              src={product?.images&&product.length>0 &&product.images?.[0].includes("https:")?product.images?.[0]:product?.images&&product.length>0 ? SERVER_URL+'/'+product.images?.[0]: "https://www.bootdey.com/image/380x380/FF00FF/000000"}
               alt={product?.title}
               className="product-main-image mb-3"
             />
             <div className="image-thumbnails d-flex gap-2">
-              {product?.images?.map((image, index) => (
+              {product.images?.map((image, index) => (
                 <img
                   key={index}
-                  src={image.includes("https:")?image:SERVER_URL+'/'+image}
+                  src={image.includes("https:")?image:image?SERVER_URL+'/'+image: "https://www.bootdey.com/image/380x380/FF00FF/000000"}
                   alt={`Thumbnail ${index + 1}`}
                   className="thumbnail-image border p-1"
                 />
@@ -141,8 +144,8 @@ const randProduct=[
             return (
             <div key={index} className="col-lg-3 pb-2">
             <div className="pro-box border p-0 m-0">
-              <Link to={`/productDetail/${product._id}`}>
-              <img  src={product.images&&product.images?.[0].includes("https:")?product.images?.[0]:SERVER_URL+'/'+product.images?.[0]}/>
+              <Link to={`/productDetail/${product?._id}`}>
+              <img  src={product.images&&product.images?.[0].includes("https:")?product.images?.[0]:product.images&&product.images?.[0]?SERVER_URL+'/'+product.images?.[0]:"no image"}/>
               </Link>
                 
           </div>

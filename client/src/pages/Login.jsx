@@ -9,6 +9,7 @@ const navigate= useNavigate()
 const [error,setError]= useState("")
 const { isLoggedIn}= useSelector((state)=>state.auth)
 const [signUp,setSignup]=useState({email:"",password:""})
+  
 const handleSubmit=async(e)=> {
 try {  e.preventDefault();
  const data= await dispatch(loginUser(signUp));

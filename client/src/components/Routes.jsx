@@ -27,13 +27,13 @@ export const PrivateRoutes = ({ children }) => {
 
 
 const isAdmin=(roles)=>{
- 
+ if(!roles) return true;
   const token = getToken();
   if (!token) return false;
   //check for access_token duration
   const{data}= jwtDecode(token)
  
-const role= data.roles.includes(roles)
+const role= data.roles.includes(roles)||false;
     return role;
 }
 

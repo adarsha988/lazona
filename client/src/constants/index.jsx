@@ -5,5 +5,6 @@ export const URLS={
     Auth:version+"/auth",
     Categories:version+"/categories",
     PRODUCTS:version+"/products",
-    ORDERS:version+"/orders"
+    ORDERS:version+"/orders",
+    USERS:version+"/users"
 }

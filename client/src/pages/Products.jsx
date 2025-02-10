@@ -1,9 +1,9 @@
+import "./ProductPage.css"; // Import CSS file
 import React, { useCallback, useEffect } from "react";
 import { GrFormView } from "react-icons/gr";
 import { IoCartOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Row, Col, Card, Button, Badge } from "react-bootstrap";
-import "./ProductPage.css"; // Import CSS file
 import { useSelector,useDispatch } from "react-redux";
 import { fetchProducts,setCurrentPage,setLimit} from "../slices/productSlice";
 import { SkelLoader } from "../components/SkeletalLoaders";
@@ -15,7 +15,7 @@ const Products = () => {
   const {products,limit,currentPage,total,loading,error}= useSelector((state)=>state.products);
   const dispatch=useDispatch();
   const initFetch= useCallback(()=>{
-    dispatch(fetchProducts({limit,page:currentPage}));
+   dispatch(fetchProducts({limit,page:currentPage}));
   },[dispatch,limit,currentPage])
   
   useEffect(()=>{
@@ -50,7 +50,7 @@ const Products = () => {
                     <Card.Text className="product-price">Price: ${product.price||""}</Card.Text>
                     <Card.Text className="product-description">{product.description?.substring(0,100).concat("......")||""}</Card.Text>
                    <div className="d-flex justify-content-center mt-4">
-                   <Link to={`/productDetail/${product._id}`} variant="primary" className=" view-btn"  >
+                   <Link to={`/productDetail/${product?._id}`} variant="primary" className=" view-btn"  >
                      <GrFormView />
                     </Link>
                                   <Button
